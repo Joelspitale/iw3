@@ -17,4 +17,8 @@ public interface IProductoNegocio {
 	public Producto modificar(Producto producto) throws NegocioException, NoEncontradoException;
 
 	public void eliminar(long id) throws NegocioException, NoEncontradoException;
+	
+	public List<Producto> findProductByPrecio(double precio) throws NegocioException, NoEncontradoException;
+	
+	public Producto findProductBydescripcion(String descripcion) throws NegocioException, NoEncontradoException;
 }

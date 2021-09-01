@@ -99,4 +99,38 @@ public class ProductosRestController {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	@GetMapping(value="/productos/precio/{precio}")
+	public ResponseEntity<List<Producto>> listadoByPrecio(@PathVariable("precio") double precio) throws NoEncontradoException {
+		try {
+			return new ResponseEntity<List<Producto>>(productoNegocio.findProductByPrecio(precio), HttpStatus.OK);
+		} catch (NegocioException e) {
+			return new ResponseEntity<List<Producto>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+
+
+@GetMapping(value="/productos/descripcion/{desc}")
+public ResponseEntity<Producto> listadoByDescripcion(@PathVariable("desc") String desc) throws NoEncontradoException {
+	try {
+		return new ResponseEntity<Producto>(productoNegocio.findProductBydescripcion(desc), HttpStatus.OK);
+	} catch (NegocioException e) {
+		return new ResponseEntity<Producto>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
 }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

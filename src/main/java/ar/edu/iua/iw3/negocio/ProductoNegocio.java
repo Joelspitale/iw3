@@ -54,11 +54,14 @@ public class ProductoNegocio implements IProductoNegocio {
 		}
 
 	}
-	
+	@Override
 	public Producto findProductBydescripcion(String descripcion) {
 		return productoDAO.findByDescripcion(descripcion).orElse(null);
 	}
-	 
+	@Override
+	public List<Producto> findProductByPrecio(double precio) {
+		return productoDAO.findByPrecio(precio).orElse(null);
+	}
 
 	@Override
 	public Producto cargar(long id) throws NegocioException, NoEncontradoException {
