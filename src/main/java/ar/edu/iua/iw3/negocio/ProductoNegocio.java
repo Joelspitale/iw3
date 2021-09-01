@@ -122,6 +122,12 @@ public class ProductoNegocio implements IProductoNegocio {
 		}
 	}
 
+	@Override
+	public List<Producto> findByPrecioBetween(double precio1, double precio2) {
+		return productoDAO.findByPrecioBetween(precio1,precio2).orElse(null);
+				
+	}
+
 	// @Bean
 	// public IProductoNegocio getProductoNegocio() {
 	// return new ProductoNegocio();

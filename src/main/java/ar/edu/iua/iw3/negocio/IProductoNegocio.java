@@ -21,4 +21,8 @@ public interface IProductoNegocio {
 	public List<Producto> findProductByPrecio(double precio) throws NegocioException, NoEncontradoException;
 	
 	public Producto findProductBydescripcion(String descripcion) throws NegocioException, NoEncontradoException;
+	
+	public List<Producto> findByPrecioBetween(double precio1, double precio2)throws NegocioException, NoEncontradoException;
+
+	
 }
