@@ -1,5 +1,6 @@
 package ar.edu.iua.iw3.negocio;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,7 +41,7 @@ public class ProductoNegocio implements IProductoNegocio {
 	@Override
 	public Producto agregar(Producto producto) throws NegocioException, EncontradoException {
 		try {
-		   if(null!=findProductBydescripcion(producto.getDescripcion())) 
+		   if(null!=findProductByDescripcion(producto.getDescripcion())) 
 		        throw new EncontradoException("Ya existe un producto con la descripcion =" + producto.getDescripcion());
 			cargar(producto.getId()); 									// tira excepcion sino no lo encuentra
 			throw new EncontradoException("Ya existe un producto con id=" + producto.getId());
@@ -54,14 +55,33 @@ public class ProductoNegocio implements IProductoNegocio {
 		}
 
 	}
+	
+	public List<Producto> findProductByPrecio(double precio) {
+		return productoDAO.findByPrecio(precio);
+	}
+	
+
 	@Override
-	public Producto findProductBydescripcion(String descripcion) {
+	public List<Producto> listarProductByPrecio(double precio) throws NegocioException, NoEncontradoException {
+		if(findProductByPrecio(precio).size() == 0) {
+			throw new NoEncontradoException("No se encuentran productos con el precio " + precio);
+		}
+		return findProductByPrecio(precio);
+	}
+	
+	
+	public Producto findProductByDescripcion(String descripcion) {
 		return productoDAO.findByDescripcion(descripcion).orElse(null);
 	}
+	
 	@Override
-	public List<Producto> findProductByPrecio(double precio) {
-		return productoDAO.findByPrecio(precio).orElse(null);
+	public Producto listarByDescripcion(String descripcion) throws NegocioException, NoEncontradoException {
+		if(findProductByDescripcion(descripcion) == null) {
+			throw new NoEncontradoException("No se encuentra el producto la descripcion " + descripcion);
+		}
+		return findProductByDescripcion(descripcion);
 	}
+
 
 	@Override
 	public Producto cargar(long id) throws NegocioException, NoEncontradoException {
@@ -88,7 +108,7 @@ public class ProductoNegocio implements IProductoNegocio {
 		//Paso 4:  Sino ningun producto tiene asignado el detalle se lo debe de modiicar sin problemas
 		
 		cargar(producto.getId()); //Paso 1
-		Producto productoWithDescription = findProductBydescripcion(producto.getDescripcion());		
+		Producto productoWithDescription = findProductByDescripcion(producto.getDescripcion());		
 		
 		if(null!=productoWithDescription) { //Paso 2 
 			
@@ -123,10 +143,22 @@ public class ProductoNegocio implements IProductoNegocio {
 	}
 
 	@Override
-	public List<Producto> findByPrecioBetween(double precio1, double precio2) {
-		return productoDAO.findByPrecioBetween(precio1,precio2).orElse(null);
-				
+	public List<Producto> ordenarPorDescripcion(double precio) throws NegocioException, NoEncontradoException {
+		List<Producto> lista = new ArrayList<Producto>();
+		try {
+			lista = productoDAO.findByPrecioOrderByDescripcion( precio);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new NegocioException(e);
+		}
+		if (lista.size() == 0) {
+			throw new NoEncontradoException("No se encuentra productos con el precio:"+ precio);
+		}
+		return lista;
+		
 	}
+
+	
 
 	// @Bean
 	// public IProductoNegocio getProductoNegocio() {

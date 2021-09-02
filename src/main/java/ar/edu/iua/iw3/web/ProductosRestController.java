@@ -42,6 +42,41 @@ public class ProductosRestController {
 		}
 	}
 	
+	
+	@GetMapping(value="/productos/ordenar_descripcion/{precio}")
+	public ResponseEntity<List<Producto>> ordenar( @PathVariable("precio") double precio )  throws NoEncontradoException {
+		try {
+			return new ResponseEntity<List<Producto>>(productoNegocio.ordenarPorDescripcion(precio), HttpStatus.OK);
+		} catch (NegocioException e) {
+			return new ResponseEntity<List<Producto>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
+	
+	@GetMapping(value="/productos/precio/{precio}")
+	  public ResponseEntity<List<Producto>> listadoByPrecio(@PathVariable("precio") double precio) throws NoEncontradoException {
+	    try {
+	      return new ResponseEntity<List<Producto>>(productoNegocio.listarProductByPrecio(precio), HttpStatus.OK);
+	    } catch (NegocioException e) {
+	      return new ResponseEntity<List<Producto>>(HttpStatus.INTERNAL_SERVER_ERROR);
+	    } catch (NoEncontradoException e) {
+		return new ResponseEntity<List<Producto>>(HttpStatus.NOT_FOUND);
+	    }
+	  }
+	
+	
+	@GetMapping(value="/productos/descripcion/{descripcion}")
+	  public ResponseEntity<Producto> listarPorDescripcion(@PathVariable("descripcion") String descripcion) throws NoEncontradoException {
+	    try {
+	      return new ResponseEntity<Producto>(productoNegocio.listarByDescripcion(descripcion), HttpStatus.OK);
+	    } catch (NegocioException e) {
+	      return new ResponseEntity<Producto>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (NoEncontradoException e) {
+			return new ResponseEntity<Producto>(HttpStatus.NOT_FOUND);
+		    }
+	  }
+	
+	
 	// curl http://localhost:8080/productos/1
 	
 	@GetMapping(value="/productos/{id}")
@@ -99,54 +134,4 @@ public class ProductosRestController {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
-	@GetMapping(value="/productos/precio/{precio}")
-	public ResponseEntity<List<Producto>> listadoByPrecio(@PathVariable("precio") double precio) throws NoEncontradoException {
-		try {
-			return new ResponseEntity<List<Producto>>(productoNegocio.findProductByPrecio(precio), HttpStatus.OK);
-		} catch (NegocioException e) {
-			return new ResponseEntity<List<Producto>>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
-
-
-@GetMapping(value="/productos/descripcion/{desc}")
-public ResponseEntity<Producto> listadoByDescripcion(@PathVariable("desc") String desc) throws NoEncontradoException {
-	try {
-		return new ResponseEntity<Producto>(productoNegocio.findProductBydescripcion(desc), HttpStatus.OK);
-	} catch (NegocioException e) {
-		return new ResponseEntity<Producto>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
 }
-
-
-
-@GetMapping(value="/productos/precio/entre/{p1}/{p2}")
-public ResponseEntity<List<Producto>> findByPrecioBetween(@PathVariable("p1") double p1,@PathVariable("p2") double p2) throws NoEncontradoException ,NegocioException{
-	try {
-		return new ResponseEntity<List<Producto>>(productoNegocio.findByPrecioBetween(p1,p2), HttpStatus.OK);
-	} catch (NegocioException e) {
-		return new ResponseEntity<List<Producto>>(HttpStatus.INTERNAL_SERVER_ERROR);
-	}
-}
-
-
-
-
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

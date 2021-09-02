@@ -12,9 +12,12 @@ import ar.edu.iua.iw3.modelo.Producto;
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
 	Optional<Producto> findByDescripcion(String descripcion);
+	
+	List<Producto> findByPrecio(double precio);
+	
+	List<Producto> findByPrecioBetween(double precio1, double precio2);
 
-	Optional<List<Producto>> findByPrecio(double precio);
-
-	Optional<List<Producto>> findByPrecioBetween(double precio1, double precio2);
-
+	List<Producto> findByPrecioOrderByDescripcion(double precio);
+	
+	//List<Producto> findAllOrderByDescripcion();
 }
