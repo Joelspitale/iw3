@@ -158,6 +158,11 @@ public class ProductoNegocio implements IProductoNegocio {
 		
 	}
 
+	@Override
+	public List<Producto> findByPrecioBetween(double precio1, double precio2) throws NegocioException, NoEncontradoException {
+			return productoDAO.findByPrecioBetween(precio1,precio2);
+		}
+
 	
 
 	// @Bean

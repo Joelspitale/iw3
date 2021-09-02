@@ -52,6 +52,15 @@ public class ProductosRestController {
 		}
 	}
 	
+	@GetMapping(value="/productos/precio/entre/{p1}/{p2}")
+	public ResponseEntity<List<Producto>> findByPrecioBetween(@PathVariable("p1") double p1,@PathVariable("p2") double p2) throws NoEncontradoException ,NegocioException{
+		try {
+			return new ResponseEntity<List<Producto>>(productoNegocio.findByPrecioBetween(p1,p2), HttpStatus.OK);
+		} catch (NegocioException e) {
+			return new ResponseEntity<List<Producto>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
+	
 	
 	@GetMapping(value="/productos/precio/{precio}")
 	  public ResponseEntity<List<Producto>> listadoByPrecio(@PathVariable("precio") double precio) throws NoEncontradoException {
