@@ -36,7 +36,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.httpBasic();//autenticacion 
-		//http.authorizeRequests().antMatchers("/productos").authenticated(); //autorizacion
-		http.authorizeRequests().antMatchers("/productos").hasRole("ADMIN"); // los roles se asignan dependiendo de quien se autentifica
-	}
+		
+		http.authorizeRequests().antMatchers("/productos").hasRole("ADMIN"); // los roles se asignan dependiendo de quien se autentifica		
+		
+		http.authorizeRequests().antMatchers("/test").hasAnyRole("ADMIN","USER");
+		
+		http.authorizeRequests().antMatchers("/productos").authenticated(); //autorizacion en todas las paginas
+		
+		//http.formLogin().defaultSuccessUrl("/productos"); //tras el logueo exitoso le indico el servicio que tiene que consumir por defecto, en este caso es "/producto"
+		http.formLogin().defaultSuccessUrl("/ui/index.html").and().logout().deleteCookies("JSESSIONID"); 
+		
+		}
 }
