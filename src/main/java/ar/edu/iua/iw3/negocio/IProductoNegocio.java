@@ -26,6 +26,11 @@ public interface IProductoNegocio {
 	public List<Producto> ordenarPorDescripcion(double precio) throws NegocioException, NoEncontradoException;
 	
 	public List<Producto> findByPrecioBetween(double precio1, double precio2)throws NegocioException, NoEncontradoException;
+
+	public List<Producto> listarProductosFechaVencimientoNoNula() throws NegocioException, NoEncontradoException;
 	
+	public List<Producto> listarProductosNoVencidos(String fecha) throws NegocioException, NoEncontradoException;
+	
+	public List<Producto> listarPrimeros2ProductosEnVencer() throws NegocioException, NoEncontradoException;
 	//ME FALTA AGREGAR EL BETWEEN ACA
 }

@@ -29,6 +29,18 @@ public class Producto implements Serializable {
 	@Column(columnDefinition = "DOUBLE DEFAULT 0")
 	private double precio;
 
+	@Column(columnDefinition = "Date", nullable = true)
+	private String fechaVencimiento;
+	
+	
+	public String getFechaVencimiento() {
+		return fechaVencimiento;
+	}
+
+	public void setFechaVencimiento(String fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
+	}
+
 	@ManyToOne
 	@JoinColumn(name = "id_rubro")
 	private Rubro rubro;
