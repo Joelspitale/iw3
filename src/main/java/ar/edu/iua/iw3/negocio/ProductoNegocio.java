@@ -169,5 +169,67 @@ public class ProductoNegocio implements IProductoNegocio {
 	// public IProductoNegocio getProductoNegocio() {
 	// return new ProductoNegocio();
 	// }
+	
+	
+	
+	
+	@Override
+	public List<Producto> listarProductosFechaVencimientoNoNula() throws NegocioException, NoEncontradoException {
+		List<Producto> lista = new ArrayList<Producto>();
+		try {
+			lista = productoDAO.findByFechaVencimientoIsNotNull( );
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new NegocioException(e);
+		}
+		if (lista.size() == 0) {
+			throw new NoEncontradoException("No hay productos con fecha de vencimiento");
+		}
+		return lista;
+		
+	}
+
+	@Override
+	public List<Producto> listarProductosNoVencidos(String fecha) throws NegocioException, NoEncontradoException {
+		List<Producto> lista = new ArrayList<Producto>();
+		try {
+			lista = productoDAO.findByFechaVencimientoAfter(fecha);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new NegocioException(e);
+		}
+		if (lista.size() == 0) {
+			throw new NoEncontradoException("No hay productos en condicion de consumo");
+		}
+		return lista;
+	}
+
+	@Override
+	public List<Producto> listarPrimeros2ProductosEnVencer() throws NegocioException, NoEncontradoException {
+		List<Producto> lista = new ArrayList<Producto>();
+		try {
+			lista = productoDAO.findFirst2ByFechaVencimientoIsNotNullOrderByFechaVencimientoAsc();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new NegocioException(e);
+		}
+		if (lista.size() == 0) {
+			throw new NoEncontradoException("No hay productos con fecha de vencimiento");
+		}
+		return lista;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
