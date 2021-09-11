@@ -1,11 +1,13 @@
 package ar.edu.iua.iw3.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -13,15 +15,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
+	@Autowired
+	private UserDetailsService userDetailsService;
+	
 	//lista de usuarios
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.inMemoryAuthentication()
+		/*auth.inMemoryAuthentication()
 		.withUser("user").password(passwordEncoder().encode("123"))
 			.roles("USER")
 		.and()
 		.withUser("admin").password(passwordEncoder().encode("123"))
-			.roles("USER","ADMIN");
+			.roles("USER","ADMIN");*/
+	
+		auth.userDetailsService(userDetailsService); //se extrae las credenciales de los usuarios desde la bd
 	}
 	
 	
@@ -44,7 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests().antMatchers("/productos").authenticated(); //autorizacion en todas las paginas
 		
 		//http.formLogin().defaultSuccessUrl("/productos"); //tras el logueo exitoso le indico el servicio que tiene que consumir por defecto, en este caso es "/producto"
-		http.formLogin().defaultSuccessUrl("/ui/index.html").and().logout().deleteCookies("JSESSIONID"); 
+		http.formLogin().defaultSuccessUrl("/ui/index.html").and().logout().deleteCookies("JSESSIONID","rememberme-iw3"); 
 		
+		http.rememberMe().rememberMeCookieName("rememberme-iw3").alwaysRemember(true);
 		}
 }
