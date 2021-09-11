@@ -143,4 +143,47 @@ public class ProductosRestController {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
 	}
+	
+	
+	@GetMapping(value="/productos/vencimiento-no-nulo")
+	public ResponseEntity<List<Producto>> productosConVencimientoNoNulo() {
+		try {
+			 return new ResponseEntity<List<Producto>>(productoNegocio.listarProductosFechaVencimientoNoNula(), HttpStatus.OK);
+		} catch (NegocioException e) {
+			return new ResponseEntity<List<Producto>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (NoEncontradoException e) {
+			return new ResponseEntity<List<Producto>>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@GetMapping(value="/productos/no-vencido/{fecha}")
+	public ResponseEntity<List<Producto>> productosnoVencidos(@PathVariable("fecha") String fecha) {
+		try {
+			 return new ResponseEntity<List<Producto>>(productoNegocio.listarProductosNoVencidos(fecha), HttpStatus.OK);
+		} catch (NegocioException e) {
+			return new ResponseEntity<List<Producto>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (NoEncontradoException e) {
+			return new ResponseEntity<List<Producto>>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	
+	@GetMapping(value="/productos/dos-primeros-en-vencer")
+	public ResponseEntity<List<Producto>> productosporVencer() {
+		try {
+			 return new ResponseEntity<List<Producto>>(productoNegocio.listarPrimeros2ProductosEnVencer(), HttpStatus.OK);
+		} catch (NegocioException e) {
+			return new ResponseEntity<List<Producto>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (NoEncontradoException e) {
+			return new ResponseEntity<List<Producto>>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	
+	
+	
+	
+	//findFirst2By si se agrega el First2 trae los dos primeros objetos según 
+	//el orden que hayamos determinado).
+		
 }
