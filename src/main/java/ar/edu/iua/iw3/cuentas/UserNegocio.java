@@ -3,13 +3,15 @@ package ar.edu.iua.iw3.cuentas;
 import java.util.Collection;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-
-
+import ar.edu.iua.iw3.modelo.Producto;
+import ar.edu.iua.iw3.negocio.ProductoNegocio;
 import ar.edu.iua.iw3.negocio.excepciones.EncontradoException;
 import ar.edu.iua.iw3.negocio.excepciones.NegocioException;
 import ar.edu.iua.iw3.negocio.excepciones.NoEncontradoException;
@@ -19,33 +21,93 @@ import java.util.Optional;
 @Service
 public class UserNegocio implements IUserNegocio {
 
+	
+	private Logger log = LoggerFactory.getLogger(UserNegocio.class);
+	
 	@Autowired
 	private UserRepository userDAO;
 
 	@Override
-	public User cargar(int id) throws NegocioException, NoEncontradoException {
-		// TODO Auto-generated method stub
-		return null;
+	public User cargar(long id) throws NegocioException, NoEncontradoException {
+		Optional<User> o;
+		try {
+			o = userDAO.findById(id);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new NegocioException(e);
+		}
+		if (!o.isPresent()) {
+			throw new NoEncontradoException("No se encuentra el producto con id=" + id);
+		}
+		return o.get();
 	}
 
 	@Override
-	public List<User> lista() throws NegocioException {
-		// TODO Auto-generated method stub
-		return null;
+	public List<User> listar() throws NegocioException {
+		try {
+			return userDAO.findAll();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new NegocioException(e);
+		}
 	}
 
 	@Override
 	public User agregar(User user) throws NegocioException, EncontradoException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+				cargar(user.getId()); 									// tira excepcion sino no lo encuentra
+				throw new EncontradoException("Ya existe un usuario con ese id=" + user.getId());
+			} catch (NoEncontradoException e) {
+			}
+			try {
+				return userDAO.save(user);
+			} catch (Exception e) {
+				log.error(e.getMessage(), e);
+				throw new NegocioException(e);
+			}
 	}
 
+	private User findUserByUsernameOrEmail(User user) {
+		return userDAO.findFirstByUsernameOrEmail(user.getUsername(),user.getEmail()).orElse(null);
+	}
+	
+	
 	@Override
-	public User modificar(User user) throws NegocioException, EncontradoException {
-		// TODO Auto-generated method stub
-		return null;
+	public User modificar(User user) throws NegocioException, NoEncontradoException {
+		//me viene un id existe con su detalle
+		//Paso 1: busco existencia del id del producto	
+		//Paso 2: busco existencia de detalle duplicado 	
+		//Paso 3_a:si el detalle del producto esta asignado a un producto con diferente id del que se quiere modificar entonces tengo que generar un error
+		//Paso 3_b: si el detalle del producto es el mismo id del produto entonces no se debe de generar error
+		//Paso 4:  Sino ningun producto tiene asignado el detalle se lo debe de modiicar sin problemas
+		
+		cargar(user.getId()); //Paso 1
+		User userExists = findUserByUsernameOrEmail(user);
+		
+		if(userExists != null) { //Paso 2 
+			
+			if (user.getId() != userExists.getId()) 
+				throw new NegocioException("Ya existe el usuario " + user + "con el username ="
+						+ user.getUsername() + " o el email" + user.getEmail() );	//Paso 3_a
+			
+			return	userDAO.save(userExists);	//Paso 3_b
+		}
+		
+		return saveUser(user);	//Paso 4
 	}
-
+	
+	
+	private  User saveUser(User user) throws NegocioException {
+		try {
+			return userDAO.save(user); // sino existe el producto lo cargo
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new NegocioException(e);
+		}
+	}
+	
+	
+	
 	@Override
 	public User cargarPorNombreOEmail(String nombreOEmail) throws NegocioException, NoEncontradoException {
 		Optional <User>  o = null;
@@ -60,7 +122,17 @@ public class UserNegocio implements IUserNegocio {
 		return o.get();
 	}
 	
-
+	
+	@Override
+	public void eliminar(long id) throws NegocioException, NoEncontradoException {
+		cargar(id);
+		try {
+			userDAO.deleteById(id);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new NegocioException(e);
+		}
+	}
 	
 
 }

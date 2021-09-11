@@ -30,7 +30,7 @@ public class Iw3Application extends SpringBootServletInitializer implements Comm
 	@Override
 	public void run(String... args) throws Exception {
 		pruebaPerfil.mensaje();
-		System.out.print(pwdEncoder.encode("123"));
+		System.out.print("Esta es la contraseña      " + pwdEncoder.encode("123") + "--------------");
 		
 		//System.out.print(userNegocio.cargarPorNombreOEmail("user").getEmail());
 		 

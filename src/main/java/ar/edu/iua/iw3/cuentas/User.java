@@ -32,7 +32,7 @@ public class User implements UserDetails, Serializable  {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	
 	@Column(length = 70, nullable = false)
 	private String nombre;
@@ -62,11 +62,11 @@ public class User implements UserDetails, Serializable  {
 	private boolean enabled;
 	
 	
-	public int getId() {
+	public long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 
