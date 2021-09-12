@@ -38,7 +38,7 @@ public class UserNegocio implements IUserNegocio {
 			throw new NegocioException(e);
 		}
 		if (!o.isPresent()) {
-			throw new NoEncontradoException("No se encuentra el producto con id=" + id);
+			throw new NoEncontradoException("No se encuentra el usuario con id=" + id);
 		}
 		return o.get();
 	}
@@ -56,7 +56,7 @@ public class UserNegocio implements IUserNegocio {
 	@Override
 	public User agregar(User user) throws NegocioException, EncontradoException {
 		try {
-				cargar(user.getId()); 									// tira excepcion sino no lo encuentra
+				cargar(user.getId()); 	// tira excepcion sino no lo encuentra
 				throw new EncontradoException("Ya existe un usuario con ese id=" + user.getId());
 			} catch (NoEncontradoException e) {
 			}
@@ -75,12 +75,12 @@ public class UserNegocio implements IUserNegocio {
 	
 	@Override
 	public User modificar(User user) throws NegocioException, NoEncontradoException {
-		//me viene un id existe con su detalle
-		//Paso 1: busco existencia del id del producto	
-		//Paso 2: busco existencia de detalle duplicado 	
-		//Paso 3_a:si el detalle del producto esta asignado a un producto con diferente id del que se quiere modificar entonces tengo que generar un error
-		//Paso 3_b: si el detalle del producto es el mismo id del produto entonces no se debe de generar error
-		//Paso 4:  Sino ningun producto tiene asignado el detalle se lo debe de modiicar sin problemas
+		//me viene un id existe con su username o email
+		//Paso 1: busco existencia del id del user	
+		//Paso 2: busco existencia de "mail" o "username" duplicado 	
+		//Paso 3_a: si el "mail" o "username" del user esta asignado a un user con diferente id del que se quiere modificar entonces tengo que generar un error
+		//Paso 3_b: si el "mail" o "username" del user es el mismo id del user que me viene, entonces no se debe de generar error
+		//Paso 4:  Sino ningun user tiene asignado el "mail" o "username" se lo debe de modificar sin problemas
 		
 		cargar(user.getId()); //Paso 1
 		User userExists = findUserByUsernameOrEmail(user);
@@ -100,7 +100,7 @@ public class UserNegocio implements IUserNegocio {
 	
 	private  User saveUser(User user) throws NegocioException {
 		try {
-			return userDAO.save(user); // sino existe el producto lo cargo
+			return userDAO.save(user); // sino existe el user lo cargo
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new NegocioException(e);

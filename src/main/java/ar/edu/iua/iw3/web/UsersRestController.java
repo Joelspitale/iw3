@@ -61,7 +61,7 @@ public class UsersRestController {
 		} catch (NegocioException e) {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch (EncontradoException e) {
-			log.error(e.getMessage(), e);	//Se hace para ver el msj de error cuando el detalle esta duplicado al agregar un producto
+			log.error(e.getMessage(), e);	//Se hace para ver el msj de error cuando el detalle esta duplicado al agregar un user
 			return new ResponseEntity<String>(HttpStatus.FOUND);
 		}
 	}
