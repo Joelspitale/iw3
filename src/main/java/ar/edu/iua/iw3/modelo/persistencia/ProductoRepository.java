@@ -30,11 +30,9 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 	List <Producto> findFirst2ByFechaVencimientoIsNotNullOrderByFechaVencimientoAsc();
 }
 
-//List<Person> findTop3ByCompanyOrderByName(Company company);
+
 
 //findFirst2By si se agrega el First2 trae los dos primeros objetos 
 //según el orden que hayamos determinado).
 
 
-
-//(ayuda: se puede usar IsNotNull en el findBy)

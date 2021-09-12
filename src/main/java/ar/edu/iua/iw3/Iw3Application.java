@@ -8,8 +8,8 @@ import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfi
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import ar.edu.iua.iw3.cuentas.IUserNegocio;
 import ar.edu.iua.iw3.demo.perfiles.IPruebaPerfil;
+import ar.edu.iua.iw3.negocio.IUserNegocio;
 
 @SpringBootApplication(exclude = { SecurityAutoConfiguration.class })
 public class Iw3Application extends SpringBootServletInitializer implements CommandLineRunner{
@@ -30,7 +30,7 @@ public class Iw3Application extends SpringBootServletInitializer implements Comm
 	@Override
 	public void run(String... args) throws Exception {
 		pruebaPerfil.mensaje();
-		System.out.print("Esta es la contraseña      " + pwdEncoder.encode("123") + "--------------");
+		//System.out.print("Esta es la contraseña      " + pwdEncoder.encode("123") + "--------------");
 		
 		//System.out.print(userNegocio.cargarPorNombreOEmail("user").getEmail());
 		 

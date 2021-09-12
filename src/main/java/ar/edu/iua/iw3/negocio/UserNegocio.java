@@ -1,4 +1,4 @@
-package ar.edu.iua.iw3.cuentas;
+package ar.edu.iua.iw3.negocio;
 
 import java.util.Collection;
 import java.util.List;
@@ -10,8 +10,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import ar.edu.iua.iw3.cuentas.User;
 import ar.edu.iua.iw3.modelo.Producto;
-import ar.edu.iua.iw3.negocio.ProductoNegocio;
+import ar.edu.iua.iw3.modelo.persistencia.UserRepository;
 import ar.edu.iua.iw3.negocio.excepciones.EncontradoException;
 import ar.edu.iua.iw3.negocio.excepciones.NegocioException;
 import ar.edu.iua.iw3.negocio.excepciones.NoEncontradoException;
