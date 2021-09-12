@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -73,6 +74,18 @@ public class UsersRestController {
 			return new ResponseEntity<String>(HttpStatus.OK);
 		} catch (NegocioException e) {
 			log.error(e.getMessage(), e);
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (NoEncontradoException e) {
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
+	@DeleteMapping(value="/usuarios/{id}")
+	public ResponseEntity<String> eliminar(@PathVariable("id") long id) {
+		try {
+			userNegocio.eliminar(id);
+			return new ResponseEntity<String>(HttpStatus.OK);
+		} catch (NegocioException e) {
 			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
 		} catch (NoEncontradoException e) {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
