@@ -56,7 +56,7 @@ public class ProductoNegocio implements IProductoNegocio {
 
 	}
 	
-	public List<Producto> findProductByPrecio(double precio) {
+	private List<Producto> findProductByPrecio(double precio) {
 		return productoDAO.findByPrecio(precio);
 	}
 	
@@ -70,7 +70,7 @@ public class ProductoNegocio implements IProductoNegocio {
 	}
 	
 	
-	public Producto findProductByDescripcion(String descripcion) {
+	private Producto findProductByDescripcion(String descripcion) {
 		return productoDAO.findByDescripcion(descripcion).orElse(null);
 	}
 	
@@ -122,7 +122,7 @@ public class ProductoNegocio implements IProductoNegocio {
 		return saveProduct(producto);	//Paso 4
 	}
 	
-	public  Producto saveProduct(Producto producto) throws NegocioException {
+	private  Producto saveProduct(Producto producto) throws NegocioException {
 		try {
 			return productoDAO.save(producto); // sino existe el producto lo cargo
 		} catch (Exception e) {
