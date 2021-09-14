@@ -54,5 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.formLogin().defaultSuccessUrl("/ui/index.html").and().logout().deleteCookies("JSESSIONID","rememberme-iw3"); 
 		
 		http.rememberMe().rememberMeCookieName("rememberme-iw3").alwaysRemember(true);
+		
+		http.csrf().disable();
 		}
 }

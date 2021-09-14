@@ -2,8 +2,6 @@ package ar.edu.iua.iw3.negocio;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import ar.edu.iua.iw3.cuentas.User;
 import ar.edu.iua.iw3.negocio.excepciones.EncontradoException;

@@ -1,7 +1,6 @@
 package ar.edu.iua.iw3.negocio;
 
 import java.util.List;
-import java.util.Optional;
 
 import ar.edu.iua.iw3.modelo.Producto;
 import ar.edu.iua.iw3.negocio.excepciones.EncontradoException;

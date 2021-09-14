@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.iua.iw3.cuentas.User;
-import ar.edu.iua.iw3.modelo.Producto;
 import ar.edu.iua.iw3.negocio.IUserNegocio;
 import ar.edu.iua.iw3.negocio.UserNegocio;
 import ar.edu.iua.iw3.negocio.excepciones.EncontradoException;

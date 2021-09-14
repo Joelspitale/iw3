@@ -1,17 +1,11 @@
 package ar.edu.iua.iw3.negocio;
 
-import java.util.Collection;
 import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
 import ar.edu.iua.iw3.cuentas.User;
-import ar.edu.iua.iw3.modelo.Producto;
 import ar.edu.iua.iw3.modelo.persistencia.UserRepository;
 import ar.edu.iua.iw3.negocio.excepciones.EncontradoException;
 import ar.edu.iua.iw3.negocio.excepciones.NegocioException;
@@ -52,24 +46,30 @@ public class UserNegocio implements IUserNegocio {
 			throw new NegocioException(e);
 		}
 	}
+	
+
 
 	@Override
 	public User agregar(User user) throws NegocioException, EncontradoException {
-		try {
-				cargar(user.getId()); 	// tira excepcion sino no lo encuentra
-				throw new EncontradoException("Ya existe un usuario con ese id=" + user.getId());
-			} catch (NoEncontradoException e) {
-			}
-			try {
-				return userDAO.save(user);
-			} catch (Exception e) {
-				log.error(e.getMessage(), e);
-				throw new NegocioException(e);
-			}
+		// El nombre de un rol es unico por lo que busco primero si el nombre del rol ya existe
+				try {
+					   if(null!=findUserByUsernameOrEmail(user.getUsername(),user.getEmail()))
+					        throw new EncontradoException("Ya existe un User con el usuario =" + user.getUsername() 
+					        			+ " o con el email ="+ user.getEmail());
+						cargar(user.getId()); 									// tira excepcion sino no lo encuentra
+						throw new EncontradoException("Ya existe un user con id=" + user.getId());
+					} catch (NoEncontradoException e) {
+					}
+					try {
+						return userDAO.save(user);
+					} catch (Exception e) {
+						log.error(e.getMessage(), e);
+						throw new NegocioException(e);
+					}
 	}
 
-	private User findUserByUsernameOrEmail(User user) {
-		return userDAO.findFirstByUsernameOrEmail(user.getUsername(),user.getEmail()).orElse(null);
+	private User findUserByUsernameOrEmail(String userName, String email) {
+		return userDAO.findFirstByUsernameOrEmail(userName,email).orElse(null);
 	}
 	
 	
@@ -83,15 +83,15 @@ public class UserNegocio implements IUserNegocio {
 		//Paso 4:  Sino ningun user tiene asignado el "mail" o "username" se lo debe de modificar sin problemas
 		
 		cargar(user.getId()); //Paso 1
-		User userExists = findUserByUsernameOrEmail(user);
+		User userExists = findUserByUsernameOrEmail(user.getUsername(),user.getEmail());
 		
-		if(userExists != null) { //Paso 2 
+		if(null != userExists ) { //Paso 2 
 			
 			if (user.getId() != userExists.getId()) 
-				throw new NegocioException("Ya existe el usuario " + user + "con el username ="
+				throw new NegocioException("Ya existe un usuario con el id" + userExists.getId() + " con el username ="
 						+ user.getUsername() + " o el email" + user.getEmail() );	//Paso 3_a
 			
-			return	userDAO.save(userExists);	//Paso 3_b
+			return	saveUser(user);	//Paso 3_b
 		}
 		
 		return saveUser(user);	//Paso 4
