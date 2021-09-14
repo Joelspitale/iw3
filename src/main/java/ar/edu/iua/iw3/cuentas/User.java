@@ -1,12 +1,10 @@
 package ar.edu.iua.iw3.cuentas;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,7 +29,7 @@ public class User implements UserDetails, Serializable  {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+	private long id;
 	
 	@Column(length = 70, nullable = false)
 	private String nombre;
