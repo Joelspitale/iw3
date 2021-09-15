@@ -1,5 +1,6 @@
 package ar.edu.iua.iw3.modelo.persistencia;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,7 +22,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 	
 	List<Producto> findByFechaVencimientoIsNotNull();
 	
-	List<Producto> findByFechaVencimientoAfter(String fecha);
+	List<Producto> findByFechaVencimientoAfter(Date fecha);
 	
 	List <Producto> findFirst2ByFechaVencimientoIsNotNullOrderByFechaVencimientoAsc();
 }

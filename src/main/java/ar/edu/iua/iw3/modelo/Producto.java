@@ -1,6 +1,7 @@
 package ar.edu.iua.iw3.modelo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,14 +31,14 @@ public class Producto implements Serializable {
 	private double precio;
 
 	@Column(columnDefinition = "Date", nullable = true)
-	private String fechaVencimiento;
+	private Date fechaVencimiento;
 	
 	
-	public String getFechaVencimiento() {
+	public Date getFechaVencimiento() {
 		return fechaVencimiento;
 	}
 
-	public void setFechaVencimiento(String fechaVencimiento) {
+	public void setFechaVencimiento(Date fechaVencimiento) {
 		this.fechaVencimiento = fechaVencimiento;
 	}
 

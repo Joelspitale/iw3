@@ -1,5 +1,7 @@
 package ar.edu.iua.iw3.negocio;
 
+
+import java.sql.Date;
 import java.util.List;
 
 import ar.edu.iua.iw3.modelo.Producto;
@@ -28,7 +30,7 @@ public interface IProductoNegocio {
 
 	public List<Producto> listarProductosFechaVencimientoNoNula() throws NegocioException, NoEncontradoException;
 	
-	public List<Producto> listarProductosNoVencidos(String fecha) throws NegocioException, NoEncontradoException;
+	public List<Producto> listarProductosNoVencidos(Date fecha) throws NegocioException, NoEncontradoException;
 	
 	public List<Producto> listarPrimeros2ProductosEnVencer() throws NegocioException, NoEncontradoException;
 	//ME FALTA AGREGAR EL BETWEEN ACA

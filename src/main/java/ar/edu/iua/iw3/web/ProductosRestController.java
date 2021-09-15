@@ -1,5 +1,7 @@
 package ar.edu.iua.iw3.web;
 
+
+import java.sql.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -157,7 +159,7 @@ public class ProductosRestController {
 	}
 	
 	@GetMapping(value="/productos/no-vencido/{fecha}")
-	public ResponseEntity<List<Producto>> productosnoVencidos(@PathVariable("fecha") String fecha) {
+	public ResponseEntity<List<Producto>> productosnoVencidos(@PathVariable("fecha") Date fecha) {
 		try {
 			 return new ResponseEntity<List<Producto>>(productoNegocio.listarProductosNoVencidos(fecha), HttpStatus.OK);
 		} catch (NegocioException e) {

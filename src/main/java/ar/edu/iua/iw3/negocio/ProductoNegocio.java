@@ -1,5 +1,6 @@
 package ar.edu.iua.iw3.negocio;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -189,7 +190,7 @@ public class ProductoNegocio implements IProductoNegocio {
 	}
 
 	@Override
-	public List<Producto> listarProductosNoVencidos(String fecha) throws NegocioException, NoEncontradoException {
+	public List<Producto> listarProductosNoVencidos(Date fecha) throws NegocioException, NoEncontradoException {
 		List<Producto> lista = new ArrayList<Producto>();
 		try {
 			lista = productoDAO.findByFechaVencimientoAfter(fecha);
@@ -217,6 +218,7 @@ public class ProductoNegocio implements IProductoNegocio {
 		}
 		return lista;
 	}
+
 	
 	
 	
