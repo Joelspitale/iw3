@@ -25,7 +25,10 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 	List<Producto> findByFechaVencimientoAfter(Date fecha);
 	
 	List <Producto> findFirst2ByFechaVencimientoIsNotNullOrderByFechaVencimientoAsc();
+	
+	Optional<Producto> findByDetalleDetalle(String detalle);
 }
+
 
 
 

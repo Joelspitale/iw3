@@ -181,6 +181,16 @@ public class ProductosRestController {
 		}
 	}
 	
+	@GetMapping(value="/productos/detalle/{detalle}")
+	public ResponseEntity<Producto> productosporVencer(@PathVariable("detalle") String detalle) {
+		try {
+			return new ResponseEntity<Producto>(productoNegocio.buscarPorDetalle(detalle), HttpStatus.OK);
+		} catch (NegocioException e) {
+			return new ResponseEntity<Producto>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (NoEncontradoException e) {
+			return new ResponseEntity<Producto>(HttpStatus.NOT_FOUND);
+		}
+	}
 	
 	
 	

@@ -3,6 +3,7 @@ package ar.edu.iua.iw3.negocio;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import ar.edu.iua.iw3.modelo.Producto;
 import ar.edu.iua.iw3.negocio.excepciones.EncontradoException;
@@ -34,4 +35,6 @@ public interface IProductoNegocio {
 	
 	public List<Producto> listarPrimeros2ProductosEnVencer() throws NegocioException, NoEncontradoException;
 	//ME FALTA AGREGAR EL BETWEEN ACA
+
+	public Producto buscarPorDetalle(String detalle) throws NegocioException, NoEncontradoException;
 }

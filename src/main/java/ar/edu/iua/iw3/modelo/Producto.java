@@ -3,6 +3,7 @@ package ar.edu.iua.iw3.modelo;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,7 +11,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
+import ar.edu.iua.iw3.modelo.persistencia.ProductoDetalle;
 
 @Entity
 @Table(name = "productos")
@@ -33,6 +37,17 @@ public class Producto implements Serializable {
 	@Column(columnDefinition = "Date", nullable = true)
 	private Date fechaVencimiento;
 	
+	public ProductoDetalle getDetalle() {
+		return detalle;
+	}
+
+	public void setDetalle(ProductoDetalle detalle) {
+		this.detalle = detalle;
+	}
+
+	@OneToOne(cascade =  CascadeType.ALL)
+	@JoinColumn(name = "id_detalle")
+	private ProductoDetalle detalle;
 	
 	public Date getFechaVencimiento() {
 		return fechaVencimiento;
@@ -106,5 +121,7 @@ public class Producto implements Serializable {
 	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
+	
+	
 
 }
