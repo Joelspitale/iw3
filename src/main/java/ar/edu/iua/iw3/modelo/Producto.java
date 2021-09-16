@@ -14,8 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import ar.edu.iua.iw3.modelo.persistencia.ProductoDetalle;
-
 @Entity
 @Table(name = "productos")
 public class Producto implements Serializable {

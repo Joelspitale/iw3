@@ -1,4 +1,4 @@
-package ar.edu.iua.iw3.modelo.persistencia;
+package ar.edu.iua.iw3.modelo;
 
 import java.io.Serializable;
 
