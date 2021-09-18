@@ -18,7 +18,8 @@ import javax.persistence.Table;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+import org.springframework.security.crypto.password.PasswordEncoder;
+import javax.persistence.Transient;
 
 
 @Entity
@@ -180,7 +181,27 @@ public class User implements UserDetails, Serializable  {
 	 * -r3			r1	r2	r3	r4																- SGA(r3)
 	 * -r4																						- SGA(r4)
 	 * */
+	
+	//si la cuenta esta todo bien me devuele null sino me devuelve que info de la cuenta
+	public String checkAccount(PasswordEncoder passwordEncoder, String password) {
+		if (!passwordEncoder.matches(password, getPassword()))
+			return "BAD_PASSWORD";
+		if (!isEnabled())
+			return "ACCOUNT_NOT_ENABLED";
+		if (!isAccountNonLocked())
+			return "ACCOUNT_LOCKED";
+		if (!isCredentialsNonExpired())
+			return "CREDENTIALS_EXPIRED";
+		if (!isAccountNonExpired())
+			return "ACCOUNT_EXPIRED";
 
+		return null;
+	}
+	
+	@Transient
+	public String getNombreCompleto() {
+		return String.format("%s, %s", getApellido(), getNombre());
+	}
 	
 
 }
