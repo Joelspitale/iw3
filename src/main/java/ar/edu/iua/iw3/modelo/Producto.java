@@ -67,6 +67,10 @@ public class Producto implements Serializable {
 		this.rubro = rubro;
 	}
 
+
+
+	
+
 	/*
 	@Transient			//indico que este atributo no tiene que ser mapeado en la bd
 	private double precioConAumento;

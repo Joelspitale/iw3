@@ -231,7 +231,7 @@ public class ProductoNegocio implements IProductoNegocio {
 			throw new NegocioException(e);
 		}
 		if (o.isEmpty()) {
-			throw new NoEncontradoException("No hay productos con fecha de vencimiento");
+			throw new NoEncontradoException("No hay productos con ese detalle");
 		}
 		return o.get();
 	}
