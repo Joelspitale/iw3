@@ -1,4 +1,4 @@
-package ar.edu.iua.iw3.config;
+package ar.edu.iua.iw3.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
