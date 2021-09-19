@@ -20,7 +20,7 @@ public class CoreRestController extends BaseRestController {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
-	private IUserNegocio iUserNegocio;
+	private IUserNegocio UserNegocio;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -32,7 +32,7 @@ public class CoreRestController extends BaseRestController {
 	public ResponseEntity<String> loginToken(@RequestParam(value = "username") String username, 
 			@RequestParam(value = "password") String password) {
 		try {
-			User u = iUserNegocio.cargarPorNombreOEmail(username); // existe usuario?
+			User u = UserNegocio.cargarPorNombreOEmail(username); // existe usuario?
 			String msg = u.checkAccount(passwordEncoder, password);	//ok cuenta = null
 			if (msg != null) {
 				return new ResponseEntity<String>(msg, HttpStatus.UNAUTHORIZED);
@@ -58,7 +58,7 @@ public class CoreRestController extends BaseRestController {
 	public ResponseEntity<String> loginTokenFullJson(@RequestParam(value = "username") String username,
 			@RequestParam(value = "password") String password) {
 		try {
-			User u = iUserNegocio.cargarPorNombreOEmail(username);
+			User u = UserNegocio.cargarPorNombreOEmail(username);
 			String msg = u.checkAccount(passwordEncoder, password);
 			if (msg != null) {
 				return new ResponseEntity<String>(msg, HttpStatus.UNAUTHORIZED);

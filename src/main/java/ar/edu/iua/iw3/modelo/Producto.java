@@ -1,18 +1,11 @@
 package ar.edu.iua.iw3.modelo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "productos")
@@ -58,6 +51,15 @@ public class Producto implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "id_rubro")
 	private Rubro rubro;
+
+	@ManyToMany
+	@JoinTable(name = "productos_ventas",
+			joinColumns = {@JoinColumn(name = "id_producto")},
+			inverseJoinColumns = { @JoinColumn(name = "id_ventas")})
+	private List<Ventas> listaVentas = new ArrayList<Ventas>();
+
+
+
 	
 	public Rubro getRubro() {
 		return rubro;
@@ -69,7 +71,9 @@ public class Producto implements Serializable {
 
 
 
-	
+
+
+
 
 	/*
 	@Transient			//indico que este atributo no tiene que ser mapeado en la bd
