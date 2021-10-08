@@ -18,7 +18,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
 	List<Producto> findByPrecioOrderByDescripcion(double precio);
 	
-	//List<Producto> findAllOrderByDescripcion();
+	List<Producto> findByProveedorName(String name);
 	
 	List<Producto> findByFechaVencimientoIsNotNull();
 	

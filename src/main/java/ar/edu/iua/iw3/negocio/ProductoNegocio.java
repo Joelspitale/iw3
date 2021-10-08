@@ -235,24 +235,21 @@ public class ProductoNegocio implements IProductoNegocio {
 		}
 		return o.get();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+	@Override
+	public List<Producto> listarProductosConNombreProveedor(String name) throws NegocioException, NoEncontradoException {
+		List<Producto> lista = new ArrayList<Producto>();
+		try {
+			lista = productoDAO.findByProveedorName(name);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new NegocioException(e);
+		}
+		if (lista.size() == 0) {
+			throw new NoEncontradoException("No hay productos que tengan como proveedor a "+ name);
+		}
+		return lista;
+	}
+
 
 }

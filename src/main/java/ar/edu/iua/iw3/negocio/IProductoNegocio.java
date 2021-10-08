@@ -34,7 +34,9 @@ public interface IProductoNegocio {
 	public List<Producto> listarProductosNoVencidos(Date fecha) throws NegocioException, NoEncontradoException;
 	
 	public List<Producto> listarPrimeros2ProductosEnVencer() throws NegocioException, NoEncontradoException;
-	//ME FALTA AGREGAR EL BETWEEN ACA
 
 	public Producto buscarPorDetalle(String detalle) throws NegocioException, NoEncontradoException;
+
+	public List<Producto> listarProductosConNombreProveedor(String name) throws NegocioException, NoEncontradoException;
+
 }

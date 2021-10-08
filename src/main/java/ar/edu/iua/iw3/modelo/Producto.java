@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.*;
 
 @Entity
@@ -27,27 +26,15 @@ public class Producto implements Serializable {
 
 	@Column(columnDefinition = "Date", nullable = true)
 	private Date fechaVencimiento;
-	
-	public ProductoDetalle getDetalle() {
-		return detalle;
-	}
 
-	public void setDetalle(ProductoDetalle detalle) {
-		this.detalle = detalle;
-	}
+	@ManyToOne(cascade=CascadeType.ALL)
+	@JoinColumn(name = "proveedor_id")
+	private Proveedor proveedor;
 
 	@OneToOne(cascade =  CascadeType.ALL)
 	@JoinColumn(name = "id_detalle")
 	private ProductoDetalle detalle;
 	
-	public Date getFechaVencimiento() {
-		return fechaVencimiento;
-	}
-
-	public void setFechaVencimiento(Date fechaVencimiento) {
-		this.fechaVencimiento = fechaVencimiento;
-	}
-
 	@ManyToOne
 	@JoinColumn(name = "id_rubro")
 	private Rubro rubro;
@@ -59,8 +46,30 @@ public class Producto implements Serializable {
 	private List<Ventas> listaVentas = new ArrayList<Ventas>();
 
 
+	public Date getFechaVencimiento() {
+		return fechaVencimiento;
+	}
 
-	
+	public void setFechaVencimiento(Date fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
+	}
+
+	public Proveedor getProveedor() {
+		return proveedor;
+	}
+
+	public void setProveedor(Proveedor proveedor) {
+		this.proveedor = proveedor;
+	}
+
+	public ProductoDetalle getDetalle() {
+		return detalle;
+	}
+
+	public void setDetalle(ProductoDetalle detalle) {
+		this.detalle = detalle;
+	}
+
 	public Rubro getRubro() {
 		return rubro;
 	}
@@ -69,23 +78,25 @@ public class Producto implements Serializable {
 		this.rubro = rubro;
 	}
 
+	public List<Ventas> getListaVentas() {
+		return listaVentas;
+	}
 
-
-
-
-
+	public void setListaVentas(List<Ventas> listaVentas) {
+		this.listaVentas = listaVentas;
+	}
 
 	/*
-	@Transient			//indico que este atributo no tiene que ser mapeado en la bd
-	private double precioConAumento;
-	
-	public double getPrecioConAumento() {
-		return getPrecio()*2;
-	}
-	
-	public void setPrecioConAumento(double precio) {
-	}
-	*/
+        @Transient			//indico que este atributo no tiene que ser mapeado en la bd
+        private double precioConAumento;
+
+        public double getPrecioConAumento() {
+            return getPrecio()*2;
+        }
+
+        public void setPrecioConAumento(double precio) {
+        }
+        */
 	private String descripcionExtendida;
 
 	public String getDescripcionExtendida() {
