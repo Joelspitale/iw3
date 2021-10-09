@@ -30,18 +30,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Autowired
 	private IUserNegocio iUserBusiness;
-	
-	//lista de usuarios
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		/*auth.inMemoryAuthentication()
+		//lista de cuentas en memoria
+		 /*auth.inMemoryAuthentication()
 		.withUser("user").password(passwordEncoder().encode("123"))
 			.roles("USER")
 		.and()
 		.withUser("admin").password(passwordEncoder().encode("123"))
 			.roles("USER","ADMIN");*/
-	
-		auth.userDetailsService(userDetailsService); //se extrae las credenciales de los usuarios desde la bd
+
+		//se extrae las credenciales de los usuarios desde la bd
+		auth.userDetailsService(userDetailsService);
 	}
 	
 	
@@ -65,9 +66,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests().antMatchers("/test").hasAnyRole("ADMIN","USER");
 		
 		http.authorizeRequests().antMatchers("/productos").authenticated(); //autorizacion en todas las paginas
-		
+
+		//agregamos nuestro propio filtro que verifica que el token es correcto, valido, etc.
 		http.addFilterAfter(new CustomTokenAuthenticationFilter(iAuthTokenBusiness, iUserBusiness), UsernamePasswordAuthenticationFilter.class);
-		
+
+		//lo hacemos al server sin estado, es decir el servidor no se va a encargar de mantener las sesiones
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//desactivo la cooke de JSessionID
 		
 		

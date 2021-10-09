@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
 import ar.edu.iua.iw3.cuentas.User;
 import ar.edu.iua.iw3.negocio.IUserNegocio;
 import ar.edu.iua.iw3.negocio.excepciones.NegocioException;

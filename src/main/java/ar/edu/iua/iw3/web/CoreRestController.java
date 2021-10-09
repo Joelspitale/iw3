@@ -20,7 +20,7 @@ public class CoreRestController extends BaseRestController {
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
-	private IUserNegocio UserNegocio;
+	private IUserNegocio userNegocio;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -32,16 +32,20 @@ public class CoreRestController extends BaseRestController {
 	public ResponseEntity<String> loginToken(@RequestParam(value = "username") String username, 
 			@RequestParam(value = "password") String password) {
 		try {
-			User u = UserNegocio.cargarPorNombreOEmail(username); // existe usuario?
+			User u = userNegocio.cargarPorNombreOEmail(username); // existe usuario?
 			String msg = u.checkAccount(passwordEncoder, password);	//ok cuenta = null
+			//devuele nulo checkAccount si todo esta bien
 			if (msg != null) {
+				u.agregaIntentoFallido(); //seteo en memory el contador de intento fallido de un usuario
+				userNegocio.modificar(u); // lo actualizo ese usuario en la bd
 				return new ResponseEntity<String>(msg, HttpStatus.UNAUTHORIZED);
 			} else {
-				//obtengo el usuario que esta logueado por el contexto
+				u.setIntentosFallidos(0);
+				//obtengo el usuario que esta logueado por el contexto y sus roles
 				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(u, null,
 						u.getAuthorities());
 				SecurityContextHolder.getContext().setAuthentication(auth);
-				//creo el token
+				//creo el token y lo cargo al mismo junto con los datos del usuario que tengo en el contexto en un json
 				return new ResponseEntity<String>(userToJson(getUserLogged()).get("authtoken").toString(),
 						HttpStatus.OK);
 			}
@@ -58,14 +62,18 @@ public class CoreRestController extends BaseRestController {
 	public ResponseEntity<String> loginTokenFullJson(@RequestParam(value = "username") String username,
 			@RequestParam(value = "password") String password) {
 		try {
-			User u = UserNegocio.cargarPorNombreOEmail(username);
+			User u = userNegocio.cargarPorNombreOEmail(username);
 			String msg = u.checkAccount(passwordEncoder, password);
 			if (msg != null) {
+				u.agregaIntentoFallido(); //seteo en memory el contador de intento fallido de un usuario
+				userNegocio.modificar(u); // lo actualizo ese usuario en la bd
 				return new ResponseEntity<String>(msg, HttpStatus.UNAUTHORIZED);
 			} else {
+				u.setIntentosFallidos(0);
 				UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(u, null,
 						u.getAuthorities());
 				SecurityContextHolder.getContext().setAuthentication(auth);
+
 				return new ResponseEntity<String>(userToJson(getUserLogged()).toString(),
 						HttpStatus.OK);
 			}

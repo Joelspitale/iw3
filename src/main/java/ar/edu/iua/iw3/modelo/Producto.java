@@ -138,7 +138,5 @@ public class Producto implements Serializable {
 	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
-	
-	
 
 }

@@ -30,7 +30,8 @@ public class BaseRestController  {
 	protected JSONObject userToJson(User u) {
 		//AuthToken token = new AuthToken(sessionTimeout, u.getUsername());
 		//AuthToken token = new AuthToken(u.getSessionTimeout(), u.getUsername());
-		AuthToken token = new AuthToken(300, u.getUsername());
+		// si el token por defecto es cero le doy 300 segundoos de duracion al token, sino lo coloco lo que tiene por defecto
+		AuthToken token = new AuthToken(u.getDuracionToken()==0?300:u.getDuracionToken(), u.getUsername());
 		String tokenValue = null;
 		try {
 			authTokenBusiness.save(token);
