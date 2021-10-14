@@ -20,7 +20,16 @@ public class Producto implements Serializable {
 
 	@Column(columnDefinition = "TINYINT DEFAULT 0")
 	private boolean enStock;
+	
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "componentes_de_productos",
+			joinColumns = {@JoinColumn(name = "id_producto")},
+			inverseJoinColumns = { @JoinColumn(name = "id_componente")})
+	private List<Componente> componente = new ArrayList<Componente>();
+	
 
+	
 	@Column(columnDefinition = "DOUBLE DEFAULT 0")
 	private double precio;
 
@@ -138,5 +147,14 @@ public class Producto implements Serializable {
 	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
+	
+	public List<Componente> getComponente() {
+		return componente;
+	}
 
+	public void setComponente(List<Componente> componente) {
+		this.componente = componente;
+	}
+
+	
 }

@@ -39,4 +39,6 @@ public interface IProductoNegocio {
 
 	public List<Producto> listarProductosConNombreProveedor(String name) throws NegocioException, NoEncontradoException;
 
+	public Producto buscarPorDetalleComponente(String detalle) throws NegocioException, NoEncontradoException;
+
 }

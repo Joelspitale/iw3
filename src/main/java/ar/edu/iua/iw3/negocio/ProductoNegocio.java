@@ -251,5 +251,20 @@ public class ProductoNegocio implements IProductoNegocio {
 		return lista;
 	}
 
+	@Override
+	public Producto buscarPorDetalleComponente(String detalle) throws NegocioException, NoEncontradoException {
+		Optional<Producto> o;
+		try {
+			o = (productoDAO.findByComponenteDescripcion(detalle));
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new NegocioException(e);
+		}
+		if (o.isEmpty()) {
+			throw new NoEncontradoException("No hay componentes con ese detalle");
+		}
+		return o.get();
+	}
+
 
 }

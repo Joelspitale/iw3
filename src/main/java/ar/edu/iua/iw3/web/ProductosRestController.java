@@ -196,6 +196,17 @@ public class ProductosRestController {
 	}
 	
 	
+	@GetMapping(value="/productos/componentes/detalle/{detalle}")
+	public ResponseEntity<Producto> productosPorDetalleComponente(@PathVariable("detalle") String detalle) {
+		try {
+			return new ResponseEntity<Producto>(productoNegocio.buscarPorDetalleComponente(detalle), HttpStatus.OK);
+		} catch (NegocioException e) {
+			return new ResponseEntity<Producto>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (NoEncontradoException e) {
+			return new ResponseEntity<Producto>(HttpStatus.NOT_FOUND);
+		}
+	}
+	
 	
 	
 	//findFirst2By si se agrega el First2 trae los dos primeros objetos según 
