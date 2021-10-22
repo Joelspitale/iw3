@@ -255,7 +255,7 @@ public class ProductoNegocio implements IProductoNegocio {
 	public Producto buscarPorDetalleComponente(String detalle) throws NegocioException, NoEncontradoException {
 		Optional<Producto> o;
 		try {
-			o = (productoDAO.findByComponenteDescripcion(detalle));
+			o = (productoDAO.findByComponenteListDescripcion(detalle));
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new NegocioException(e);

@@ -28,7 +28,7 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 	
 	Optional<Producto> findByDetalleDetalle(String detalle);
 
-	Optional<Producto> findByComponenteDescripcion(String detalle);
+	Optional<Producto> findByComponenteListDescripcion(String detalle);
 }
 
 

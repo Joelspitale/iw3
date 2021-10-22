@@ -59,23 +59,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.csrf().disable();
 		//http.httpBasic();//autenticacion 
 		
-		
-		///////////////PARA NO RENEGAR CON LAS CLASES DE LA PROFE JULI
-		http.authorizeRequests().antMatchers(HttpMethod.GET,"/productos/**").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.POST,"/productos/**").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.PUT,"/productos/**").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.DELETE,"/productos/**").permitAll();
-		
-		
-		http.authorizeRequests().antMatchers(HttpMethod.GET,"/componentes/**").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.POST,"/componentes/**").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.PUT,"/componentes/**").permitAll();
-		http.authorizeRequests().antMatchers(HttpMethod.DELETE,"/componentes/**").permitAll();
-		//////////////////////////////////////////////////////////////////////////////////////77
-		
-		
-		
-		
 		http.authorizeRequests().antMatchers(HttpMethod.POST,"/login").permitAll(); //permito a todos los usuarios que ingresen a la pantalla cuya uri empieze con login
 		
 		http.authorizeRequests().antMatchers("/productos").hasRole("ADMIN"); // los roles se asignan dependiendo de quien se autentifica		
@@ -83,6 +66,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests().antMatchers("/test").hasAnyRole("ADMIN","USER");
 		
 		http.authorizeRequests().antMatchers("/productos").authenticated(); //autorizacion en todas las paginas
+
+		http.authorizeRequests().antMatchers("/componentes").authenticated(); //autorizacion en todas las paginas
 
 		//agregamos nuestro propio filtro que verifica que el token es correcto, valido, etc.
 		http.addFilterAfter(new CustomTokenAuthenticationFilter(iAuthTokenBusiness, iUserBusiness), UsernamePasswordAuthenticationFilter.class);

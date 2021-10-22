@@ -1,61 +1,47 @@
 package ar.edu.iua.iw3.modelo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
-@Entity
 @Table(name="componente")
-public class Componente implements Serializable{
+@Entity
+public class Componente implements Serializable {
 
-	
-	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
-	
-	@Column(length = 50, nullable = false)
-	private String descripcion;
-	
-	@ManyToMany(mappedBy="componente" )
-	@JsonBackReference
-	private List<Producto> producto;
+    private static final long serialVersionUID = 1L;
 
-	public long getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
 
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Column(length = 50, nullable = false)
+    private String descripcion;
 
-	public String getDescripcion() {
-		return descripcion;
-	}
+    @ManyToMany(mappedBy="componenteList" )
+    @JsonBackReference
+    private List<Producto> productoList;
 
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
-	}
+    public void setId(long id) {
+        this.id = id;
+    }
 
-	public List<Producto> getProducto() {
-		return producto;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public void setProducto(List<Producto> producto) {
-		this.producto = producto;
-	}
-	
-	
-	
-	
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public List<Producto> getProductoList() {
+        return productoList;
+    }
+
+    public void setProductoList(List<Producto> productoList) {
+        this.productoList = productoList;
+    }
 }

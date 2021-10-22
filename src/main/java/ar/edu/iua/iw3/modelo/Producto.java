@@ -20,16 +20,13 @@ public class Producto implements Serializable {
 
 	@Column(columnDefinition = "TINYINT DEFAULT 0")
 	private boolean enStock;
-	
-	
+
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "componentes_de_productos",
 			joinColumns = {@JoinColumn(name = "id_producto")},
 			inverseJoinColumns = { @JoinColumn(name = "id_componente")})
-	private List<Componente> componente = new ArrayList<Componente>();
-	
+	private List<Componente> componenteList = new ArrayList<Componente>();
 
-	
 	@Column(columnDefinition = "DOUBLE DEFAULT 0")
 	private double precio;
 
@@ -54,6 +51,13 @@ public class Producto implements Serializable {
 			inverseJoinColumns = { @JoinColumn(name = "id_ventas")})
 	private List<Ventas> listaVentas = new ArrayList<Ventas>();
 
+	public List<Componente> getComponenteList() {
+		return componenteList;
+	}
+
+	public void setComponenteList(List<Componente> componenteList) {
+		this.componenteList = componenteList;
+	}
 
 	public Date getFechaVencimiento() {
 		return fechaVencimiento;
@@ -95,17 +99,6 @@ public class Producto implements Serializable {
 		this.listaVentas = listaVentas;
 	}
 
-	/*
-        @Transient			//indico que este atributo no tiene que ser mapeado en la bd
-        private double precioConAumento;
-
-        public double getPrecioConAumento() {
-            return getPrecio()*2;
-        }
-
-        public void setPrecioConAumento(double precio) {
-        }
-        */
 	private String descripcionExtendida;
 
 	public String getDescripcionExtendida() {
@@ -147,14 +140,5 @@ public class Producto implements Serializable {
 	public void setPrecio(double precio) {
 		this.precio = precio;
 	}
-	
-	public List<Componente> getComponente() {
-		return componente;
-	}
 
-	public void setComponente(List<Componente> componente) {
-		this.componente = componente;
-	}
-
-	
 }

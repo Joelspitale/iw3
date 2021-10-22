@@ -3,6 +3,7 @@ package ar.edu.iua.iw3.web;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -194,8 +195,7 @@ public class ProductosRestController {
 			return new ResponseEntity<Producto>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
-	
+
 	@GetMapping(value="/productos/componentes/detalle/{detalle}")
 	public ResponseEntity<Producto> productosPorDetalleComponente(@PathVariable("detalle") String detalle) {
 		try {
