@@ -266,5 +266,55 @@ public class ProductoNegocio implements IProductoNegocio {
 		return o.get();
 	}
 
+	@Override
+	public List<Producto> buscarPorDetalleComponentePorNativeQuery(String descripcion) throws NegocioException, NoEncontradoException {
+		List<Producto> lista = new ArrayList<Producto>();
+		try {
+			lista = productoDAO.findByComponenteListDescripcionUserNativeQuery(descripcion);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new NegocioException(e);
+		}
+		if (lista.size() == 0) {
+			throw new NoEncontradoException("No hay productos que tengas asignados que contengan componentes " +
+					"cuyo como detalle sea: "+ descripcion);
+		}
+		return lista;
+	}
+
+	@Override
+	public Producto modificarPrecioPorQueryNative(Producto producto) throws NegocioException, NoEncontradoException {
+		//me viene un id existe con su detalle
+		//Paso 1: busco existencia del id del producto
+		//Paso 2: busco existencia de detalle duplicado
+		//Paso 3_a:si el detalle del producto esta asignado a un producto con diferente id del que se quiere modificar entonces tengo se genera un error
+		//Paso 3_b: si el detalle del producto es el mismo id del produto entonces no se debe de generar error
+		//Paso 4:  Sino ningun producto tiene asignado el detalle se lo debe de modiicar sin problemas
+
+		cargar(producto.getId()); //Paso 1
+		Producto productoWithDescription = findProductByDescripcion(producto.getDescripcion());
+
+		if(null!=productoWithDescription) { //Paso 2
+
+			if (producto.getId() != productoWithDescription.getId())
+				throw new NegocioException("Ya existe el producto " + productoWithDescription.getId() + "con la descripcion ="
+						+ producto.getDescripcion());	//Paso 3_a
+
+			return	saveWithQueryNative(producto);	//Paso 3_b
+		}
+
+		return saveWithQueryNative(producto);	//Paso 4
+	}
+
+
+	private Producto saveWithQueryNative(Producto producto) throws NegocioException {
+		try{
+			productoDAO.updateprecioWithQueryNative(producto.getPrecio(),producto.getId());
+			return productoDAO.findById(producto.getId()).get();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new NegocioException(e);
+		}
+	}
 
 }

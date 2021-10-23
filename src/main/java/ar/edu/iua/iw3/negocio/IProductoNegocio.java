@@ -41,4 +41,8 @@ public interface IProductoNegocio {
 
 	public Producto buscarPorDetalleComponente(String detalle) throws NegocioException, NoEncontradoException;
 
+	public List<Producto> buscarPorDetalleComponentePorNativeQuery(String descripcion) throws NegocioException, NoEncontradoException;
+
+	public Producto modificarPrecioPorQueryNative(Producto producto) throws NegocioException, NoEncontradoException;
+
 }

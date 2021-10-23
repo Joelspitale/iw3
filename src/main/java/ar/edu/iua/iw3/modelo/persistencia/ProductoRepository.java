@@ -4,8 +4,12 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ar.edu.iua.iw3.modelo.Producto;
+import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
@@ -29,6 +33,20 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 	Optional<Producto> findByDetalleDetalle(String detalle);
 
 	Optional<Producto> findByComponenteListDescripcion(String detalle);
+
+	@Query(value = "select * from productos p \n" +
+			"\tinner join componentes_de_productos cp on cp.id_producto = p.id\n" +
+			"\tinner join componente c on c.id = cp.id_componente\n" +
+			"\twhere c.descripcion like %:descripcion%", nativeQuery = true)
+	public List<Producto> findByComponenteListDescripcionUserNativeQuery(@Param("descripcion") String descripcion);
+
+
+	@Modifying
+    @Transactional
+    @Query(value = " UPDATE productos p SET p.precio=:precio WHERE id=:id", nativeQuery =  true)
+	public void updateprecioWithQueryNative(@Param("precio") double precio,
+												@Param("id") long id);
+
 }
 
 

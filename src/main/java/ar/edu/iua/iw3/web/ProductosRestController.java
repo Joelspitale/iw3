@@ -135,6 +135,19 @@ public class ProductosRestController {
 			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
 	}
+
+	@PutMapping(value="/productos-modificar-precio-query-native")
+	public ResponseEntity<String> modificarPrecioPorQueryNative(@RequestBody Producto producto) {
+		try {
+			productoNegocio.modificarPrecioPorQueryNative(producto);
+			return new ResponseEntity<String>(HttpStatus.OK);
+		} catch (NegocioException e) {
+			log.error(e.getMessage(), e);
+			return new ResponseEntity<String>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (NoEncontradoException e) {
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+		}
+	}
 	
 	// curl -X DELETE http://localhost:8080/productos/11 -v
 	
@@ -206,10 +219,18 @@ public class ProductosRestController {
 			return new ResponseEntity<Producto>(HttpStatus.NOT_FOUND);
 		}
 	}
-	
-	
-	
-	//findFirst2By si se agrega el First2 trae los dos primeros objetos según 
-	//el orden que hayamos determinado).
+
+	@GetMapping(value="/productos/componentes-native-query/detalle/{detalle}")
+	public ResponseEntity<List<Producto>> productosPorDetalleComponenteUsandoQueryNative(@PathVariable("detalle") String detalle) {
+		try {
+			return new ResponseEntity<List<Producto>>(productoNegocio.buscarPorDetalleComponentePorNativeQuery(detalle), HttpStatus.OK);
+		} catch (NegocioException e) {
+			return new ResponseEntity<List<Producto>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (NoEncontradoException e) {
+			return new ResponseEntity<List<Producto>>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+
 		
 }

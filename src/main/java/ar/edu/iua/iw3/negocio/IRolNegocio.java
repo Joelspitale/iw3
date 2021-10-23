@@ -8,7 +8,7 @@ import ar.edu.iua.iw3.negocio.excepciones.NegocioException;
 import ar.edu.iua.iw3.negocio.excepciones.NoEncontradoException;
 
 public interface IRolNegocio {
-public Rol cargar(long id) throws NegocioException, NoEncontradoException;
+	public Rol cargar(long id) throws NegocioException, NoEncontradoException;
 	
 	public List <Rol> listar() throws NegocioException;
 	
