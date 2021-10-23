@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="author" content="magm">
+    <link rel="icon" type="image/png" href="../favicon.png" sizes="32x32">
+    <script type="text/javascript" src="ui/lib/angular/angular.min.js"></script>
+    <script type="text/javascript" src="ui/lib/angular-route/angular-route.min.js"></script>
+    <script type="text/javascript" src="ui/app.js"></script>
+    <script type="text/javascript" src="ui/controladores/maincontroller.js"></script>
+    <script type="text/javascript" src="ui/rutas.js"></script>
+    <script type="text/javascript" src="ui/modulos/productos/productos-module.js"></script>
+    <script type="text/javascript" src="ui/modulos/productos/productos-controller.js"></script>
+    <title>IW3</title>
+</head>
+<body ng-app='iw3'>
+    <!--
+    <H1>hola</H1>
+    {{1+2}}
+    <div ng-controller="controladorDiv1">
+        Todo lo que esta dentro de esta etiqueta es una vista que es controlada por
+        un controlador
+        <h3>{{titulo}}</h3>
+        <p> Size: {{datos.size}}</p>
+        <p> Tamaño de letra : <input type="number" ng-model="datos.size"></p>
+        <p style="font-size:{{datos.size}}px">Este es el primer ejemplo</p>
+    </div>
+
+    <div ng-controller="controladorDiv2">
+        Todo lo que esta dentro de esta etiqueta es una vista que es controlada por
+        un controlador
+        <h3>{{titulo}}</h3>
+    </div>
+    -->
+    <div style="height: 100%; width:100%" ng-view=""> </div>
+</body>
+</html>

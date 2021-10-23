@@ -59,27 +59,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.csrf().disable();
 		//http.httpBasic();//autenticacion 
 		
-		http.authorizeRequests().antMatchers(HttpMethod.POST,"/login").permitAll(); //permito a todos los usuarios que ingresen a la pantalla cuya uri empieze con login
-		
+		http.authorizeRequests().antMatchers(HttpMethod.POST,"/login*").permitAll(); //permito a todos los usuarios que ingresen a la pantalla cuya uri empieze con login
+		http.authorizeRequests().antMatchers("/index.html").permitAll();
+		http.authorizeRequests().antMatchers("/favicon.png").permitAll();
+		http.authorizeRequests().antMatchers("/ui/**").permitAll();
+		http.authorizeRequests().antMatchers("/").permitAll();
+
 		http.authorizeRequests().antMatchers("/productos").hasRole("ADMIN"); // los roles se asignan dependiendo de quien se autentifica		
-		
+
 		http.authorizeRequests().antMatchers("/test").hasAnyRole("ADMIN","USER");
 		
-		http.authorizeRequests().antMatchers("/productos").authenticated(); //autorizacion en todas las paginas
+		//http.authorizeRequests().antMatchers("/productos").authenticated(); //autorizacion en todas las paginas
 
-		http.authorizeRequests().antMatchers("/componentes").authenticated(); //autorizacion en todas las paginas
+		//http.authorizeRequests().antMatchers("/componentes").authenticated(); //autorizacion en todas las paginas
 
 		//agregamos nuestro propio filtro que verifica que el token es correcto, valido, etc.
 		http.addFilterAfter(new CustomTokenAuthenticationFilter(iAuthTokenBusiness, iUserBusiness), UsernamePasswordAuthenticationFilter.class);
 
 		//lo hacemos al server sin estado, es decir el servidor no se va a encargar de mantener las sesiones
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//desactivo la cooke de JSessionID
-		
-		
+
+
 		/*
 		//http.formLogin().defaultSuccessUrl("/productos"); //tras el logueo exitoso le indico el servicio que tiene que consumir por defecto, en este caso es "/producto"
-		http.formLogin().defaultSuccessUrl("/ui/index.html").and().logout().deleteCookies("JSESSIONID","rememberme-iw3"); 
-		
 		http.rememberMe().rememberMeCookieName("rememberme-iw3").alwaysRemember(true);
 		*/
 		}
