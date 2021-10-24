@@ -1,1 +1,13 @@
 <h2>{{titulo}}</h2>
+Buscar<input type="text" ng-model="textoBuscado">
+<ol>
+    <li ng-repeat=" p in lista">{{p.id}} - {{p.descripcion}} - $ {{p.precio}}</li>
+    <table border="1">
+        <tr>
+            <td>ID</td><td>Descripción</td><td>Precio</td><td>Rubro</td>
+        </tr>
+        <tr ng-repeat=" p in lista | filter:textoBuscado">
+            <td>{{p.id}}</td><td>{{p.descripcion}}</td><td>{{p.precio | number:3}}</td><td>{{p.rubro.rubro}}</td>
+        </tr>
+    </table>
+</ol>
