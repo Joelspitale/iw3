@@ -69,9 +69,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 		http.authorizeRequests().antMatchers("/test").hasAnyRole("ADMIN","USER");
 
+		//http.authorizeRequests().antMatchers("/productos").permitAll();//authenticated(); //autorizacion sin logueo en el directorio "productos"
+
 		http.authorizeRequests().anyRequest().authenticated(); //tiene que estar autenticado para cualquier directorio de nuestra pagina web
 		
-		//http.authorizeRequests().antMatchers("/productos").authenticated(); //autorizacion sin logueo en el directorio "productos"
 
 		//http.authorizeRequests().antMatchers("/componentes").authenticated(); //autorizacion en todas las paginas
 

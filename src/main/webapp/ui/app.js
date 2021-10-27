@@ -5,7 +5,7 @@ var app = angular.module('iw3',[
 //aca se crean las cte en angular
 app.constant('URL_BASE','http://localhost:8080');
 
-app.config(function($localStorageProvider){
+app.config(function($localStorageProvider){ // le agrego iw3 a la variable de localStore
     $localStorageProvider.setKeyPrefix('iw3/');
 });
 
@@ -48,10 +48,10 @@ app.run(['$rootScope','$uibModal','CoreService','$location','$log','$localStorag
                 });
             }
         };
+        //ver porque no anda
+        //$rootScope.openLoginForm();
 
-        $rootScope.openLoginForm();
-
-        //CoreService.authInfo();
+        CoreService.authInfo(); //llamo al interceptor
 
     }
 ]);

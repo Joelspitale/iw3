@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -84,6 +85,11 @@ public class CoreRestController extends BaseRestController {
 			return new ResponseEntity<String>("BAD_ACCOUNT_NAME", HttpStatus.UNAUTHORIZED);
 		}
 
+	}
+	//si esta logueado te devuelve el usuario logueado y sino lo esta te devuelve un 403 o un 401
+	@GetMapping(value = "/auth-info")
+	public ResponseEntity<String> authInfo() {
+		return new ResponseEntity<String>(userToJson(getUserLogged()).toString(), HttpStatus.OK);
 	}
 
 }

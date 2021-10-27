@@ -12,14 +12,14 @@ angular.module('iw3').factory('CoreService',function($http,URL_BASE,$log,$localS
 			};
 			return $http(config);		//le paso un objeto json
 		},
-		authInfo:function(){
-			//$log.log()
-			return $http.get(URL_BASE+"/token");
+		authInfo:function(){			// es un metodo protegido, osea me refiero que sino estoy legueado me devuelve un 403
+			//$log.log()				// si estoy logueado me devuelve el usuario que esta logueado
+			return $http.get(URL_BASE+"/auth-info");
 		},
 		logout: function() {
 			delete $localStorage.userdata;
 			$localStorage.logged=false;
-			$http.get(URL_BASE+"/token");
+			$http.get(URL_BASE+"/auth-info");
 		}
 	};
 });

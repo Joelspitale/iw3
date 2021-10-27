@@ -1,5 +1,6 @@
-angular.module('iw3').config(($routeProvider, $locationProvider)=>{
+angular.module('iw3').config(($routeProvider, $locationProvider, $httpProvider)=>{
     $locationProvider.hashPrefix('!');
+    $httpProvider.interceptors.push('APIInterceptor');
     $routeProvider
         .when('/main',{
             templateUrl: 'ui/vistas/main.html',
