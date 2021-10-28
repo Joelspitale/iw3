@@ -1,13 +1,16 @@
 package ar.edu.iua.iw3.web;
 
 
+import org.springframework.data.domain.Pageable;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
+import ar.edu.iua.iw3.modelo.dto.ProductoDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -231,6 +234,19 @@ public class ProductosRestController {
 		}
 	}
 
+	@GetMapping(value="/productos/buscar-componentes-por-dto/componente/{componente}")
+	public ResponseEntity<List<ProductoDTO>> productosPorDetalleYPrecioPorComponenteUsandoDTO(@PathVariable("componente") String detalle) {
+		try {
+			return new ResponseEntity<List<ProductoDTO>>(productoNegocio.findByElPrecioAndDetalleDTO(detalle), HttpStatus.OK);
+		} catch (NegocioException e) {
+			return new ResponseEntity<List<ProductoDTO>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		} catch (NoEncontradoException e) {
+			return new ResponseEntity<List<ProductoDTO>>(HttpStatus.NOT_FOUND);
+		}
+	}
 
-		
+	@GetMapping(value="/productos_pagina")
+	public Page<Producto> cargarPaginas(Pageable pageable) {
+		return (productoNegocio.findAllPage(pageable));
+		}
 }

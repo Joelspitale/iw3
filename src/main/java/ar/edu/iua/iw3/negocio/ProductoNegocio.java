@@ -1,13 +1,16 @@
 package ar.edu.iua.iw3.negocio;
 
+import org.springframework.data.domain.Pageable;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import ar.edu.iua.iw3.modelo.dto.ProductoDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import ar.edu.iua.iw3.modelo.Producto;
@@ -295,7 +298,6 @@ public class ProductoNegocio implements IProductoNegocio {
 		Producto productoWithDescription = findProductByDescripcion(producto.getDescripcion());
 
 		if(null!=productoWithDescription) { //Paso 2
-
 			if (producto.getId() != productoWithDescription.getId())
 				throw new NegocioException("Ya existe el producto " + productoWithDescription.getId() + "con la descripcion ="
 						+ producto.getDescripcion());	//Paso 3_a
@@ -304,6 +306,22 @@ public class ProductoNegocio implements IProductoNegocio {
 		}
 
 		return saveWithQueryNative(producto);	//Paso 4
+	}
+
+	@Override
+	public List<ProductoDTO> findByElPrecioAndDetalleDTO(String componente ) throws NegocioException, NoEncontradoException {
+		List<ProductoDTO> lista = new ArrayList<ProductoDTO>();
+		try {
+			lista = productoDAO.findByElPrecioAndDetalleDTO(componente);
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new NegocioException(e);
+		}
+		if (lista.size() == 0) {
+			throw new NoEncontradoException("No hay productos que tengas asignados que contengan componentes " +
+					"cuyo como detalle sea: "+ componente);
+		}
+		return lista;
 	}
 
 
@@ -316,5 +334,11 @@ public class ProductoNegocio implements IProductoNegocio {
 			throw new NegocioException(e);
 		}
 	}
+
+	@Override
+	public Page<Producto> findAllPage(Pageable pageable) {
+		return productoDAO.findAll(pageable);
+	}
+
 
 }

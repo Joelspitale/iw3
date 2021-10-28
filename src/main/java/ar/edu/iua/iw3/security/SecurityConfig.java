@@ -63,7 +63,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests().antMatchers("/index.html").permitAll();
 		http.authorizeRequests().antMatchers("/favicon.png").permitAll();
 		http.authorizeRequests().antMatchers("/ui/**").permitAll();
-		http.authorizeRequests().antMatchers("/").permitAll();
+		http.authorizeRequests().antMatchers("/").permitAll();	//seteo que me permita ingresar a la pagina por defecto cuando ingreso la url como "localhost:8080"
 
 		//http.authorizeRequests().antMatchers("/productos").permitAll();//.hasRole("ADMIN"); // los roles se asignan dependiendo de quien se autentifica
 

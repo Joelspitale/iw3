@@ -1,8 +1,12 @@
 package ar.edu.iua.iw3.modelo.persistencia;
 
+import org.springframework.data.domain.Pageable;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
+
+import ar.edu.iua.iw3.modelo.dto.ProductoDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -21,7 +25,10 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
 	List<Producto> findByPrecioBetween(double precio1, double precio2);
 
 	List<Producto> findByPrecioOrderByDescripcion(double precio);
-	
+
+	@Query(nativeQuery = true)
+	List<ProductoDTO> findByElPrecioAndDetalleDTO(String componente);
+
 	List<Producto> findByProveedorName(String name);
 	
 	List<Producto> findByFechaVencimientoIsNotNull();
@@ -46,6 +53,12 @@ public interface ProductoRepository extends JpaRepository<Producto, Long> {
     @Query(value = " UPDATE productos p SET p.precio=:precio WHERE id=:id", nativeQuery =  true)
 	public void updateprecioWithQueryNative(@Param("precio") double precio,
 												@Param("id") long id);
+
+
+	@Query(value = "select * from productos ORDER BY rand()",
+			countQuery = "SELECT count(*) FROM productos ",
+			nativeQuery = true)
+	public Page<Producto> findAll(Pageable pageable);
 
 }
 

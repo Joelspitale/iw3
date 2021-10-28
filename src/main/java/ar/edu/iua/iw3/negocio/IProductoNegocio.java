@@ -1,14 +1,17 @@
 package ar.edu.iua.iw3.negocio;
 
 
+import org.springframework.data.domain.Pageable;
 import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 
 import ar.edu.iua.iw3.modelo.Producto;
+import ar.edu.iua.iw3.modelo.dto.ProductoDTO;
 import ar.edu.iua.iw3.negocio.excepciones.EncontradoException;
 import ar.edu.iua.iw3.negocio.excepciones.NegocioException;
 import ar.edu.iua.iw3.negocio.excepciones.NoEncontradoException;
+import org.springframework.data.domain.Page;
 
 public interface IProductoNegocio {
 	public List<Producto> listado() throws NegocioException;
@@ -45,4 +48,7 @@ public interface IProductoNegocio {
 
 	public Producto modificarPrecioPorQueryNative(Producto producto) throws NegocioException, NoEncontradoException;
 
+	public List<ProductoDTO> findByElPrecioAndDetalleDTO(String componente) throws NegocioException, NoEncontradoException;
+
+	public Page<Producto> findAllPage(Pageable pageable);
 }

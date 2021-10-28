@@ -16,7 +16,7 @@ angular.module('iw3').factory('CoreService',function($http,URL_BASE,$log,$localS
 			//$log.log()				// si estoy logueado me devuelve el usuario que esta logueado
 			return $http.get(URL_BASE+"/auth-info");
 		},
-		logout: function() {
+		logout: function() {	//al desloguearme tengo que eliminar mi nombre de usaurio, token y la bandera
 			delete $localStorage.userdata;
 			$localStorage.logged=false;
 			$http.get(URL_BASE+"/auth-info");

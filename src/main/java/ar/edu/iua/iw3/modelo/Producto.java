@@ -1,10 +1,35 @@
 package ar.edu.iua.iw3.modelo;
 
+import ar.edu.iua.iw3.modelo.dto.ProductoDTO;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.*;
+
+@NamedNativeQueries({
+
+
+		@NamedNativeQuery(name = "Producto.findByElPrecioAndDetalleDTO", query = "select p.descripcion, p.precio from productos p \n" +
+				"\tinner join componentes_de_productos cp on cp.id_producto = p.id\n" +
+				"\tinner join componente c on c.id = cp.id_componente\n" +
+				"\twhere c.descripcion like ?1", resultSetMapping = "productomap")
+
+})
+
+@SqlResultSetMapping(
+		name="productomap",
+		classes = {
+				@ConstructorResult(
+						columns = {
+								@ColumnResult(name = "p.descripcion", type = String.class),
+								@ColumnResult(name = "p.precio", type = double.class)
+						},
+						targetClass = ProductoDTO.class
+				)
+		}
+)
 
 @Entity
 @Table(name = "productos")

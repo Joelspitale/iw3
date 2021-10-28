@@ -16,9 +16,10 @@ app.run(['$rootScope','$uibModal','CoreService','$location','$log','$localStorag
 
         //$rootScope.stomp=$stomp;
 
+        //esta funcion tiene cambiar la url del lado del cliente(osea del # a la derecha cambio)
         $rootScope.relocate = function(loc) {
-            $rootScope.oldLoc=$location.$$path;
-            $location.path(loc);
+            $rootScope.oldLoc=$location.$$path; //guardo la url actual
+            $location.path(loc);    //modifico la url a la que deseo ir, y le paso como parametro lo el directorio al que voy por ejemplo: productos
         };
 
         $rootScope.userData=function() {
