@@ -11,6 +11,7 @@
 		<div class="form-group">
 			<label for="nombre" class="control-label col-xs-4">Nombre</label>
 			<div class="col-xs-8">
+				<!--conecto con ng-model la vista con el controller, de hecho con mi controller de mi modal abierto "AgregaEditaProductoModal" que esta en el archivo productos-controller-->
 				<input id="nombre" name="nombre"
 				ng-model="$ctrl.instancia.descripcion"
 					placeholder="Ingrese nombre del Producto" type="text"
@@ -27,19 +28,19 @@
 				</div>
 			</div>
 		</div>
-		<!--
+
 		<div class="form-group">
 			<label for="rubro" class="control-label col-xs-4">Rubro</label>
 			<div class="col-xs-8">
 				<div class="input-group">
-				 <select class="form-control"
-				 	ng-options="r.rubro for r in $ctrl.rubros track by r.id" 
-				 	ng-model="$ctrl.instancia.rubro">
-    			</select>
+					<select class="form-control"
+							ng-options="r.rubro for r in $ctrl.rubros track by r.id"
+							ng-model="$ctrl.instancia.rubro">
+					</select>
 				</div>
 			</div>
 		</div>
-		-->
+
 		<div class="form-group">
 			<label for="descripcion" class="control-label col-xs-4">Descripción</label>
 			<div class="col-xs-8">

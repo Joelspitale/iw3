@@ -1,10 +1,10 @@
 package ar.edu.iua.iw3.web;
 
 
+import ar.edu.iua.iw3.modelo.Rubro;
 import org.springframework.data.domain.Pageable;
 import java.sql.Date;
 import java.util.List;
-import java.util.Optional;
 
 import ar.edu.iua.iw3.modelo.dto.ProductoDTO;
 import org.slf4j.Logger;
@@ -249,4 +249,13 @@ public class ProductosRestController {
 	public Page<Producto> cargarPaginas(Pageable pageable) {
 		return (productoNegocio.findAllPage(pageable));
 		}
+
+	@GetMapping(value="/rubros")
+	public ResponseEntity<List<Rubro>> listadoRubros() {
+		try {
+			return new ResponseEntity<List<Rubro>>(productoNegocio.listadoRubros(), HttpStatus.OK);
+		} catch (NegocioException e) {
+			return new ResponseEntity<List<Rubro>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 }

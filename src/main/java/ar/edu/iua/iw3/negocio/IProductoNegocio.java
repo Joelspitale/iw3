@@ -1,6 +1,7 @@
 package ar.edu.iua.iw3.negocio;
 
 
+import ar.edu.iua.iw3.modelo.Rubro;
 import org.springframework.data.domain.Pageable;
 import java.sql.Date;
 import java.util.List;
@@ -15,6 +16,8 @@ import org.springframework.data.domain.Page;
 
 public interface IProductoNegocio {
 	public List<Producto> listado() throws NegocioException;
+
+	public List<Rubro> listadoRubros() throws NegocioException;
 
 	public Producto cargar(long id) throws NegocioException, NoEncontradoException;
 

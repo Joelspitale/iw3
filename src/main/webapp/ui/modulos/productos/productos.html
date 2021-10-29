@@ -1,11 +1,94 @@
-<h2>{{titulo}}</h2>
-Buscar<input type="text" ng-model="textoBuscado">
+<div style="padding-left: 20px; padding-right: 20px">
 
-    <table border="1">
+    <button type="button" class="btn btn-default"
+            ng-click="isCollapsed = !isCollapsed">
+            {{ !isCollapsed ? 'Ver links de documentación >' : '< Ocultar links de documentación'}}
+    </button>
+    <hr>
+    <div uib-collapse="!isCollapsed">
+        <div class="well well-lg">
+            <a target="_blank" href="https://bootstrapformbuilder.com/">Página
+                Bootstrap Form Builder</a> <br /> <a target="_blank"
+                                                     href="https://angular-ui.github.io/bootstrap/">Página AngularJS
+            Bootstrap UI Components</a> <br /> <a target="_blank"
+                                                  href="https://oitozero.github.io/ngSweetAlert/#/home">Página
+            Sweet Alert</a> <br /> <a target="_blank"
+                                      href="https://github.com/alexcrack/angular-ui-notification">Página
+            UI Notification:</a>
+        </div>
+    </div>
+
+    <!-- Botones Cabecera-->
+    <div class="panel panel-success">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-2">
+                    <h3 class="panel-title">{{titulo}}</h3>
+                </div>
+                <div class="col-md-10">
+                    <div class="pull-right">
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                    <input type="text" placeholder="Filtrar..."
+                                           ng-model="textoBuscado" class="form-control">
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <button ng-click="refresh()"
+                                        class="btn btn-default glyphicon glyphicon-refresh"
+                                        title="Refrescar lista"></button>
+                                <!-- Si le paso true es porque voy a editar, sino es porque voy a agregar un producto-->
+                                <!--- En JS es true cualquier cosa que diferente a null, cero y false-->
+                                <button ng-click="addEdit(false)"
+                                        class="btn btn-primary pull-right"
+                                        title="Agregar un nuevo producto">
+                                    <i class="glyphicon glyphicon-plus"></i> Agregar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <table class="table table-hover" style="margin-top: 20px">
         <tr>
-            <td>ID</td><td>Descripción</td><td>Precio</td><td>Rubro</td>
+            <td>ID</td><td>Descripción</td><td>Precio</td><td>Rubro</td><td>Opciones</td>
         </tr>
-        <tr ng-repeat=" p in lista | filter:textoBuscado">
-            <td>{{p.id}}</td><td>{{p.descripcion}}</td><td>{{p.precio | number:3}}</td><td>{{p.rubro.rubro}}</td>
+        <!-- Utilizo el for each para calcular el rango de items de mi pagina-->
+        <tr ng-repeat="p in lista.slice(((paginaActual-1)*itemsPorPagina), ((paginaActual)*itemsPorPagina)) | filter:textoBuscado">>
+            <td>{{p.id}}</td>
+            <td popover-append-to-body="true"
+                uib-popover="{{p.descripcionExtendida}}"
+                popover-trigger="'mouseenter'">{{p.descripcion}}</td>
+            <td>{{p.descripcion}}</td>
+            <td>{{p.precio | number:3}}</td>
+            <td>{{p.rubro.rubro}}</td>
+            <td><i ng-show="p.enStock" class="glyphicon glyphicon-ok"></i></td>
+            <!-- Botones de editado y borrado por cada fila-->
+            <td>
+                <button class="btn btn-warning glyphicon glyphicon-pencil"
+                        title="Editar" ng-click="addEdit(p)"></button>
+                <button class="btn btn-danger glyphicon glyphicon-trash"
+                        title="Eliminar" ng-click="remove(p)"></button>
+            </td>
         </tr>
     </table>
+
+    <!-- Paginacion-->
+    <hr />
+    <div style="text-align: center;">
+        <ul uib-pagination total-items="totalDeItems"
+            ng-model="paginaActual" max-size="5"
+            class="pagination-sm" items-per-page="itemsPorPagina"
+            next-text="Siguiente" previous-text="Anterior"></ul>
+    </div>
+
+    <!-- Parte inferior de la pagina-->
+    <div class="panel-footer" style="text-align: center;">
+        <pre>{{lista.length}} productos en la lista.</pre>
+    </div>
+</div>

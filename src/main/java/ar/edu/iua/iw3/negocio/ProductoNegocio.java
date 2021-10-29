@@ -1,5 +1,7 @@
 package ar.edu.iua.iw3.negocio;
 
+import ar.edu.iua.iw3.modelo.Rubro;
+import ar.edu.iua.iw3.modelo.persistencia.RubroRepository;
 import org.springframework.data.domain.Pageable;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -25,6 +27,8 @@ public class ProductoNegocio implements IProductoNegocio {
 	private Logger log = LoggerFactory.getLogger(ProductoNegocio.class);
 	@Autowired
 	private ProductoRepository productoDAO;
+	@Autowired
+	private RubroRepository rubroDAO;
 
 	// IoC
 	// A y B
@@ -35,6 +39,16 @@ public class ProductoNegocio implements IProductoNegocio {
 	public List<Producto> listado() throws NegocioException {
 		try {
 			return productoDAO.findAll();
+		} catch (Exception e) {
+			log.error(e.getMessage(), e);
+			throw new NegocioException(e);
+		}
+	}
+
+	@Override
+	public List<Rubro> listadoRubros() throws NegocioException {
+		try {
+			return rubroDAO.findAll();
 		} catch (Exception e) {
 			log.error(e.getMessage(), e);
 			throw new NegocioException(e);

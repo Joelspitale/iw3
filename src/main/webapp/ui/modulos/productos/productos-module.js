@@ -1,1 +1,1 @@
-angular.module('productos',[]);
+angular.module('productos',['ui.bootstrap','ui-notification','oitozero.ngSweetAlert']);

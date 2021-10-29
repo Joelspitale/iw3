@@ -1,6 +1,8 @@
 //var app = angular.module('iw3',[]);
 var app = angular.module('iw3',[
-    'ngRoute','productos','ui.bootstrap','ngStorage','oitozero.ngSweetAlert']);
+    'ngRoute','productos','ui.bootstrap','ngStorage','oitozero.ngSweetAlert',
+    'ngSanitize', 'ngAnimate', 'ngTouch',
+    'chart.js', 'ngStomp']);
 
 //aca se crean las cte en angular
 app.constant('URL_BASE','http://localhost:8080');
