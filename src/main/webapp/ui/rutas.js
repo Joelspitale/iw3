@@ -10,6 +10,10 @@ angular.module('iw3').config(($routeProvider, $locationProvider, $httpProvider)=
             templateUrl: 'ui/modulos/productos/productos.html',
             controller: 'Productos'
         })
+        .when('/graficos',{
+            templateUrl : 'ui/modulos/graficos/graficos.html',
+            controller: 'GraficosController'
+        })
         .otherwise({
             redirectTo: '/main'
         });

@@ -250,6 +250,7 @@ public class ProductosRestController {
 		return (productoNegocio.findAllPage(pageable));
 		}
 
+	/*
 	@GetMapping(value="/rubros")
 	public ResponseEntity<List<Rubro>> listadoRubros() {
 		try {
@@ -258,4 +259,6 @@ public class ProductosRestController {
 			return new ResponseEntity<List<Rubro>>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	 */
+
 }

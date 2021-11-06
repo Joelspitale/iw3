@@ -2,10 +2,11 @@
 var app = angular.module('iw3',[
     'ngRoute','productos','ui.bootstrap','ngStorage','oitozero.ngSweetAlert',
     'ngSanitize', 'ngAnimate', 'ngTouch',
-    'chart.js', 'ngStomp']);
+    'chart.js', 'ngStomp','graficos']);
 
 //aca se crean las cte en angular
 app.constant('URL_BASE','http://localhost:8080');
+app.constant('URL_WS','http://localhost:8080/api/v1/ws');
 
 app.config(function($localStorageProvider){ // le agrego iw3 a la variable de localStore
     $localStorageProvider.setKeyPrefix('iw3/');
@@ -13,10 +14,10 @@ app.config(function($localStorageProvider){ // le agrego iw3 a la variable de lo
 
 
 //la dependencia $uibModal abre y configura los modales no los cierra
-app.run(['$rootScope','$uibModal','CoreService','$location','$log','$localStorage',
-    function($rootScope, $uibModal, CoreService, $location, $log, $localStorage) {
+app.run(['$rootScope','$uibModal','CoreService','$location','$log','$localStorage','$stomp',
+    function($rootScope, $uibModal, CoreService, $location, $log, $localStorage,$stomp) {
 
-        //$rootScope.stomp=$stomp;
+        $rootScope.stomp=$stomp;
 
         //esta funcion tiene cambiar la url del lado del cliente(osea del # a la derecha cambio)
         $rootScope.relocate = function(loc) {

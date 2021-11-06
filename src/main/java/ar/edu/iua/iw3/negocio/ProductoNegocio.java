@@ -1,7 +1,9 @@
 package ar.edu.iua.iw3.negocio;
 
+import ar.edu.iua.iw3.eventos.ProductoEvent;
 import ar.edu.iua.iw3.modelo.Rubro;
 import ar.edu.iua.iw3.modelo.persistencia.RubroRepository;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -124,7 +126,13 @@ public class ProductoNegocio implements IProductoNegocio {
 		//Paso 3_b: si el detalle del producto es el mismo id del produto entonces no se debe de generar error
 		//Paso 4:  Sino ningun producto tiene asignado el detalle se lo debe de modiicar sin problemas
 		
-		cargar(producto.getId()); //Paso 1
+		Producto old = cargar(producto.getId()); //Paso 1
+
+		//si ocurre esto disparo el evento
+		if(old.getPrecio()<producto.getPrecio()*0.9){
+			generarEvento(producto, ProductoEvent.Tipo.SUBE_PRECIO);//genero el evento enviando el producto que lo dispara y el motivo o tipo
+		}
+
 		Producto productoWithDescription = findProductByDescripcion(producto.getDescripcion());		
 		
 		if(null!=productoWithDescription) { //Paso 2 
@@ -138,7 +146,15 @@ public class ProductoNegocio implements IProductoNegocio {
 		
 		return saveProduct(producto);	//Paso 4
 	}
-	
+
+	@Autowired
+	private ApplicationEventPublisher appEventPublisher;	// es la clase que dispara el evento
+
+	private void generarEvento(Producto producto, ProductoEvent.Tipo tipo) {
+		appEventPublisher.publishEvent(new ProductoEvent(producto, tipo));
+	}
+
+
 	private  Producto saveProduct(Producto producto) throws NegocioException {
 		try {
 			return productoDAO.save(producto); // sino existe el producto lo cargo

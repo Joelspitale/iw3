@@ -51,10 +51,13 @@
 
     <script type="text/javascript" src="ui/modulos/productos/productos-controller.js"></script>
     <script type="text/javascript" src="ui/modulos/productos/productos-service.js"></script>
+
     <script type="text/javascript" src="ui/controladores/maincontroller.js"></script>
     <script type="text/javascript" src="ui/controladores/login-controller.js"></script>
+    <script type="text/javascript" src="ui/modulos/graficos/graficos.js"></script>
 
     <script type="text/javascript" src="ui/servicios/core-service.js"></script>
+    <script type="text/javascript" src="ui/servicios/ws.service.js"></script>
 
 
     <title>IW3</title>
@@ -100,6 +103,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Administración <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li><a ng-click="relocate('productos')">Productos</a></li>  <!-- coloco el ng-click para setear una accion al seleccionar el boton -->
+                            <li><a ng-click="relocate('graficos')">Graficos</a></li>
                         </ul>
                     </li>
                 </ul>
