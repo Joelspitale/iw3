@@ -370,5 +370,40 @@ public class ProductoNegocio implements IProductoNegocio {
 		return productoDAO.findAll(pageable);
 	}
 
+	@Override
+	public Producto cargar(String codigoExterno) throws NegocioException, NoEncontradoException {
+		Optional<Producto> op;
+		try {
+			op = productoDAO.findFirstByCodigoExterno(codigoExterno);
+		} catch (Exception e) {
+			throw new NegocioException(e);
+		}
+		if (!op.isPresent()) {
+			throw new NoEncontradoException(
+					"El producto con código externo '" + codigoExterno + "', no se encuentra en la BD");
+		}
+		return op.get();
+	}
+
+	@Override
+	public Producto asegurarProducto(Producto producto) throws NegocioException {
+		Producto p = null;
+		try {
+			p = cargar(producto.getCodigoExterno());
+			//si lo encuentro al producto en la bd por su codigo externo entonces
+			p.setPrecio(producto.getPrecio());
+			p.setDescripcion(producto.getDescripcion());
+			// Colocar aquí los datos recibidos del exterior que no sean opcionales
+		} catch (NoEncontradoException e) {
+			p = new Producto(producto);	//sino lo encuentra al producto en la bd lo creo al objeto
+		}
+		try {
+			p=productoDAO.save(p);	//guardo el producto con los datos que me vinieron del sistema externo y lo obtengo con el id autogenerado
+		} catch (Exception e) {
+			throw new NegocioException(e);
+		}
+		return p;
+	}
+
 
 }

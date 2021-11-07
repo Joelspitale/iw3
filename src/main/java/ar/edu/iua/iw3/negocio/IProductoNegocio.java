@@ -54,4 +54,10 @@ public interface IProductoNegocio {
 	public List<ProductoDTO> findByElPrecioAndDetalleDTO(String componente) throws NegocioException, NoEncontradoException;
 
 	public Page<Producto> findAllPage(Pageable pageable);
+
+	//cargar producto con condigo externo
+	public Producto cargar(String codigoExterno) throws NegocioException, NoEncontradoException;
+
+	//si el producto existe en la bd lo actualizo y sino lo creo---> siempre le paso el producto con el contructor de los atributos mas importantes
+	public Producto asegurarProducto(Producto producto) throws NegocioException;
 }

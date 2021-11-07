@@ -36,9 +36,27 @@ import javax.persistence.*;
 public class Producto implements Serializable {
 	private static final long serialVersionUID = -4533737025960198404L;
 
+	public Producto() {
+	}
+
+	//coloco los atributos del producto que me vienen del sistema externo
+	public Producto(Producto producto) {
+		setCodigoExterno(producto.getCodigoExterno());
+		setDescripcion(producto.getDescripcion());
+		setPrecio(producto.getPrecio());
+		setDescripcionExtendida(producto.getDescripcionExtendida());
+		setEnStock(producto.isEnStock());
+		setRubro(producto.getRubro());
+		//Aquí colocar el resto de los atributos del producto que se quieran copiar
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)	//auto numerico
 	private long id;
+
+	//la clave primeria de mi producto en mi sistema pasaria a ser mi clave secundaria
+	@Column(length = 50, nullable = true, unique=true)
+	private String codigoExterno;
 	
 	@Column(length = 100, nullable = false, unique = true)
 	private String descripcion;
@@ -166,6 +184,11 @@ public class Producto implements Serializable {
 		this.precio = precio;
 	}
 
+	public String getCodigoExterno() {
+		return codigoExterno;
+	}
 
-
+	public void setCodigoExterno(String codigoExterno) {
+		this.codigoExterno = codigoExterno;
+	}
 }

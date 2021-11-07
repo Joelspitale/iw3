@@ -18,6 +18,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
+	public Optional<Producto> findFirstByCodigoExterno(String codigoExterno);
+
 	Optional<Producto> findByDescripcion(String descripcion);
 	
 	List<Producto> findByPrecio(double precio);
