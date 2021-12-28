@@ -156,8 +156,6 @@ public class OrdenNegocio implements IOrdenNegocio{
         }
     }
 
-
-
     public Orden findByCodigoExterno( String codigoExterno) {
         return ordenDAO.findByCodigoExterno(codigoExterno).orElse(null);
     }

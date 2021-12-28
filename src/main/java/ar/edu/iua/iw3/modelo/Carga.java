@@ -106,4 +106,16 @@ public class Carga implements Serializable {
         this.orden = orden;
     }
 
+    public String checkBasicData(){
+        if(getMasaAcumuladaKg()<=0)
+            return "El atributo 'MasaAcumuladaKg' tiene que ser mayor a cero";
+        if(getDensidadProductoKilogramoMetroCub()<=0)
+            return "El atributo 'DensidadProductoKilogramoMetroCub' no puede ser menor cero";
+        if(getTemperaturaProductoCelcius()>100 || getTemperaturaProductoCelcius()<-60)
+            return "El atributo 'TemperaturaProductoCelcius' tiene que ser entre -60 a 100 ºC ";
+        if(getCaudalLitroSegundo()<=0)
+            return "El atributo 'caudalLitroSegundo' no puede ser menor a cero";
+        return null;
+    }
+
 }

@@ -4,9 +4,10 @@ import ar.edu.iua.iw3.modelo.Carga;
 import ar.edu.iua.iw3.modelo.dto.CargaDTO;
 import ar.edu.iua.iw3.negocio.CargaNegocio;
 import ar.edu.iua.iw3.negocio.ICargaNegocio;
-import ar.edu.iua.iw3.negocio.excepciones.EncontradoException;
+import ar.edu.iua.iw3.negocio.excepciones.BadRequest;
 import ar.edu.iua.iw3.negocio.excepciones.NegocioException;
 import ar.edu.iua.iw3.negocio.excepciones.NoEncontradoException;
+import ar.edu.iua.iw3.negocio.excepciones.UnprocessableException;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -52,7 +53,7 @@ public class CargaRestController {
     @GetMapping(value= "/promedio-cargas-por-codigo-externo")
     public ResponseEntity<CargaDTO> ResumenCargaPorId(@RequestParam("codigoExterno") String codigoExterno) {
         try {
-            return new ResponseEntity<CargaDTO>(cargaNegocio.getAcumulacionAndPromedioCargas(codigoExterno), HttpStatus.OK);
+            return new ResponseEntity<CargaDTO>(cargaNegocio.getPromedioDensidadAndTemperaturaAndCaudal(codigoExterno), HttpStatus.OK);
         } catch (NegocioException e) {
             log.error(e.getMessage(), e);
             return new ResponseEntity<CargaDTO>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -81,6 +82,12 @@ public class CargaRestController {
         }catch (NoEncontradoException e) {
             log.error(e.getMessage(), e);
             return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+        } catch (BadRequest e) {
+            log.error(e.getMessage(), e);
+            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+        } catch (UnprocessableException e) {
+            log.error(e.getMessage(), e);
+            return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
         }
     }
 
