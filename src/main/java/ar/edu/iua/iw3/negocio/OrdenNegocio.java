@@ -3,6 +3,7 @@ package ar.edu.iua.iw3.negocio;
 import ar.edu.iua.iw3.modelo.*;
 import ar.edu.iua.iw3.modelo.dto.ConciliacionDTO;
 import ar.edu.iua.iw3.modelo.persistencia.OrdenRepository;
+import ar.edu.iua.iw3.negocio.excepciones.BadRequest;
 import ar.edu.iua.iw3.negocio.excepciones.EncontradoException;
 import ar.edu.iua.iw3.negocio.excepciones.NegocioException;
 import ar.edu.iua.iw3.negocio.excepciones.NoEncontradoException;
@@ -118,7 +119,7 @@ public class OrdenNegocio implements IOrdenNegocio{
 
 
     @Override
-    public Orden agregar(Orden orden) throws NegocioException, EncontradoException {
+    public Orden agregar(Orden orden) throws NegocioException, EncontradoException, BadRequest {
         try {
             if(null!=findByCodigoExterno(orden.getCodigoExterno()))
                 throw new EncontradoException("Ya existe en la base de datos una orden con el numero =" + orden.getCodigoExterno());
@@ -127,11 +128,21 @@ public class OrdenNegocio implements IOrdenNegocio{
             throw new EncontradoException("Ya existe una orden con id=" + orden.getId());
         } catch (NoEncontradoException e) {
         }
+        Camion camionJson = orden.getCamion();
+        Cliente clienteJson = orden.getCliente();
+        Chofer choferJson = orden.getChofer();
+        Producto productoJson = orden.getProducto();
+        validarMetadata(camionJson,clienteJson,choferJson,productoJson);
         try {
-            Camion camion = camionNegocio.findCamionByPatente(orden.getCamion().getPatente());
-            Cliente cliente = clienteNegocio.findByContacto(orden.getCliente().getContacto());
-            Chofer chofer = choferNegocio.findByDocumento(orden.getChofer().getDocumento());
-            Producto producto = productoNegocio.findProductoByNombre(orden.getProducto().getNombre());
+            //1.0 --> valido si la metadata de cada campo es el correcto
+            //2.0 --> Los busco en la bd
+            //3.0 --> Los creo en caso de que no existan
+
+
+            Camion camion = camionNegocio.findCamionByPatente(camionJson.getPatente());
+            Cliente cliente = clienteNegocio.findByContacto(clienteJson.getContacto());
+            Chofer chofer = choferNegocio.findByDocumento(choferJson.getDocumento());
+            Producto producto = productoNegocio.findProductoByNombre(productoJson.getNombre());
             //si es nulo implica que es un camion, cliente, chofer o producto nuevo
             if(camion!= null)
                 orden.setCamion(camion);
@@ -151,6 +162,12 @@ public class OrdenNegocio implements IOrdenNegocio{
 
     public Orden findByCodigoExterno( String codigoExterno) {
         return ordenDAO.findByCodigoExterno(codigoExterno).orElse(null);
+    }
+
+    private void validarMetadata(Camion camion,Cliente cliente,Chofer chofer,Producto producto) throws BadRequest{
+        if(camion.checkBasicData() != null)
+            throw new BadRequest(camion.checkBasicData());
+
     }
 
 

@@ -3,6 +3,7 @@ package ar.edu.iua.iw3.negocio;
 import ar.edu.iua.iw3.modelo.Carga;
 import ar.edu.iua.iw3.modelo.Orden;
 import ar.edu.iua.iw3.modelo.dto.ConciliacionDTO;
+import ar.edu.iua.iw3.negocio.excepciones.BadRequest;
 import ar.edu.iua.iw3.negocio.excepciones.EncontradoException;
 import ar.edu.iua.iw3.negocio.excepciones.NegocioException;
 import ar.edu.iua.iw3.negocio.excepciones.NoEncontradoException;
@@ -14,7 +15,7 @@ public interface IOrdenNegocio {
 
     Orden cargar(long id) throws NegocioException, NoEncontradoException;
 
-    Orden agregar(Orden orden) throws NegocioException, EncontradoException;
+    Orden agregar(Orden orden) throws NegocioException, EncontradoException, BadRequest;
 
     Orden modificar(Orden orden) throws NegocioException, NoEncontradoException;
 
