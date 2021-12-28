@@ -3,10 +3,7 @@ package ar.edu.iua.iw3.negocio;
 import ar.edu.iua.iw3.modelo.*;
 import ar.edu.iua.iw3.modelo.dto.ConciliacionDTO;
 import ar.edu.iua.iw3.modelo.persistencia.OrdenRepository;
-import ar.edu.iua.iw3.negocio.excepciones.BadRequest;
-import ar.edu.iua.iw3.negocio.excepciones.EncontradoException;
-import ar.edu.iua.iw3.negocio.excepciones.NegocioException;
-import ar.edu.iua.iw3.negocio.excepciones.NoEncontradoException;
+import ar.edu.iua.iw3.negocio.excepciones.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,22 +125,20 @@ public class OrdenNegocio implements IOrdenNegocio{
             throw new EncontradoException("Ya existe una orden con id=" + orden.getId());
         } catch (NoEncontradoException e) {
         }
+        //1.0 --> valido si la metadata de cada campo es el correcto
         Camion camionJson = orden.getCamion();
         Cliente clienteJson = orden.getCliente();
         Chofer choferJson = orden.getChofer();
         Producto productoJson = orden.getProducto();
         validarMetadata(camionJson,clienteJson,choferJson,productoJson);
+        convertirMayusculasPatenteCamionYnombreProducto(camionJson,productoJson);
         try {
-            //1.0 --> valido si la metadata de cada campo es el correcto
             //2.0 --> Los busco en la bd
-            //3.0 --> Los creo en caso de que no existan
-
-
             Camion camion = camionNegocio.findCamionByPatente(camionJson.getPatente());
             Cliente cliente = clienteNegocio.findByContacto(clienteJson.getContacto());
             Chofer chofer = choferNegocio.findByDocumento(choferJson.getDocumento());
             Producto producto = productoNegocio.findProductoByNombre(productoJson.getNombre());
-            //si es nulo implica que es un camion, cliente, chofer o producto nuevo
+
             if(camion!= null)
                 orden.setCamion(camion);
             if(cliente!= null)
@@ -152,6 +147,7 @@ public class OrdenNegocio implements IOrdenNegocio{
                 orden.setChofer(chofer);
             if(producto != null)
                 orden.setProducto(producto);
+            ////3.0 --> Los creo en caso de que no existan
             orden.setEstado(1);
             return ordenDAO.save(orden);
         } catch (Exception e) {
@@ -159,6 +155,8 @@ public class OrdenNegocio implements IOrdenNegocio{
             throw new NegocioException(e);
         }
     }
+
+
 
     public Orden findByCodigoExterno( String codigoExterno) {
         return ordenDAO.findByCodigoExterno(codigoExterno).orElse(null);
@@ -170,6 +168,10 @@ public class OrdenNegocio implements IOrdenNegocio{
             || chofer.checkBasicData()!= null
             || producto.checkBasicData() != null)
             throw new BadRequest(camion.checkBasicData());
+    }
+    private void convertirMayusculasPatenteCamionYnombreProducto(Camion camionJson,Producto productoJson) {
+        camionJson.setPatente(camionJson.getPatente().toUpperCase());
+        productoJson.setNombre(productoJson.getNombre().toUpperCase());
     }
 
 
@@ -211,30 +213,23 @@ public class OrdenNegocio implements IOrdenNegocio{
     }
 
     @Override
-    public Orden establecerPesajeInicial(Orden orden) throws NegocioException, NoEncontradoException {
+    public Orden establecerPesajeInicial(Orden orden) throws NegocioException, NoEncontradoException, BadRequest, ConflictException {
         Orden ordenBD = findByCodigoExterno(orden.getCodigoExterno());
         if(null==ordenBD)
             throw new NoEncontradoException("No existe la orden con codigo externo =" + orden.getCodigoExterno());
 
-        try {
-            if(null== ordenBD)
-                throw new NoEncontradoException("La orden "+orden.getCodigoExterno()+" no existe");
+        camionNegocio.setearPesoIni(orden.getCamion(), ordenBD.getCamion());
+        ordenBD = validarFechaPesajeInicial(orden, ordenBD);
+        ordenBD.setEstado(2);
+        ordenBD.setPassword(String.valueOf(Math.abs(ordenBD.hashCode())).substring(0,5));
+    return modificar(ordenBD);
 
-            camionNegocio.setearPesoIni(orden.getCamion(), ordenBD.getCamion());
-            ordenBD = validarFechaPesajeInicial(orden, ordenBD);
-            ordenBD.setEstado(2);
-            ordenBD.setPassword(String.valueOf(Math.abs(ordenBD.hashCode())).substring(0,5));
-            return modificar(ordenBD);
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            throw new NegocioException(e);
-        }
     }
 
-    private Orden validarFechaPesajeInicial(Orden orden, Orden ordenDB) throws NegocioException {
+    private Orden validarFechaPesajeInicial(Orden orden, Orden ordenDB) throws ConflictException {
         Date fechaPesajeInicialRecibida = orden.getFechaPesajeInicial();
         if(ordenDB.getFechaTurno().compareTo(fechaPesajeInicialRecibida)>0)
-            throw new NegocioException("La fecha de pesaje debe de ser despues de la fecha de turno");
+            throw new ConflictException("La fecha de pesaje debe de ser despues de la fecha de turno");
 
         ordenDB.setFechaPesajeInicial(fechaPesajeInicialRecibida);
         return  ordenDB;

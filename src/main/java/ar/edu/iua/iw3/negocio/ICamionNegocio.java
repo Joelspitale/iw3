@@ -3,10 +3,7 @@ package ar.edu.iua.iw3.negocio;
 import java.util.List;
 
 import ar.edu.iua.iw3.modelo.Camion;
-import ar.edu.iua.iw3.negocio.excepciones.BadRequest;
-import ar.edu.iua.iw3.negocio.excepciones.EncontradoException;
-import ar.edu.iua.iw3.negocio.excepciones.NegocioException;
-import ar.edu.iua.iw3.negocio.excepciones.NoEncontradoException;
+import ar.edu.iua.iw3.negocio.excepciones.*;
 
 public interface ICamionNegocio {
 
@@ -20,5 +17,5 @@ public interface ICamionNegocio {
 
 	void eliminar(long id) throws NegocioException, NoEncontradoException;
 
-    Camion setearPesoIni(Camion camionRecibido, Camion camionBD ) throws NoEncontradoException,NegocioException;;
+    Camion setearPesoIni(Camion camionRecibido, Camion camionBD ) throws NoEncontradoException, NegocioException, BadRequest, ConflictException;;
 }

@@ -142,9 +142,9 @@ public class Camion  implements Serializable {
             return "El atributo 'patente' es obligatorio";
         if(!checkPatente(getPatente()))
             return "El atributo 'patente' tiene un mal formato";
-        if(getCisternadoLitros()<1000)
+        if(getCisternadoLitros()<=0)
             return "El atributo 'cisternadoLitros' tiene que ser mayor a cero";
-        if(getPreset()<500)
+        if(getPreset()<=0)
             return "El atributo 'preset' tiene que ser mayor a cero";
     return null;
     }

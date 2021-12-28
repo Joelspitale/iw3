@@ -6,16 +6,13 @@ import java.util.Optional;
 import ar.edu.iua.iw3.modelo.Camion;
 import ar.edu.iua.iw3.modelo.Orden;
 import ar.edu.iua.iw3.modelo.persistencia.OrdenRepository;
-import ar.edu.iua.iw3.negocio.excepciones.BadRequest;
+import ar.edu.iua.iw3.negocio.excepciones.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.edu.iua.iw3.modelo.persistencia.CamionRepository;
-import ar.edu.iua.iw3.negocio.excepciones.EncontradoException;
-import ar.edu.iua.iw3.negocio.excepciones.NegocioException;
-import ar.edu.iua.iw3.negocio.excepciones.NoEncontradoException;
 
 
 @Service
@@ -134,14 +131,14 @@ public class CamionNegocio implements ICamionNegocio{
 	}
 
 	@Override
-	public Camion setearPesoIni(Camion camionRecibido, Camion camionBD) throws NoEncontradoException, NegocioException {
-			if(!camionBD.getPatente().equals(camionRecibido.getPatente()))
-				throw new NegocioException("La patente enviada :"+ camionRecibido.getPatente()+" no esta asociada a la orden enviada");
+	public Camion setearPesoIni(Camion camionRecibido, Camion camionBD) throws  NegocioException, BadRequest, ConflictException {
+			if(!camionBD.getPatente().equalsIgnoreCase(camionRecibido.getPatente()))
+				throw new ConflictException("La patente enviada :"+ camionRecibido.getPatente()+" no esta asociada a la orden enviada");
 			if(camionRecibido.getTara()<= 0)
-				throw new NegocioException("La tara no puede ser negativa");
+				throw new BadRequest("El atributo 'tara' tiene que ser mayor a cero");
 			camionBD.setTara(camionRecibido.getTara());
 
-			return modificar(camionBD);
+			return saveCamion(camionBD);
 	}
 
 	public Camion setearPesoFinalCamion(Orden orden) throws NoEncontradoException, NegocioException {
