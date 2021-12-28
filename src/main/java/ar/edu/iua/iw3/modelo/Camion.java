@@ -144,7 +144,7 @@ public class Camion  implements Serializable {
             return "El atributo 'patente' tiene un mal formato";
         if(getCisternadoLitros()<1000)
             return "El atributo 'cisternadoLitros' tiene que ser mayor a cero";
-        if(getPreset()<1000)
+        if(getPreset()<500)
             return "El atributo 'preset' tiene que ser mayor a cero";
     return null;
     }

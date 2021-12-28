@@ -165,9 +165,11 @@ public class OrdenNegocio implements IOrdenNegocio{
     }
 
     private void validarMetadata(Camion camion,Cliente cliente,Chofer chofer,Producto producto) throws BadRequest{
-        if(camion.checkBasicData() != null)
+        if(camion.checkBasicData() != null
+            || cliente.checkBasicData()!= null
+            || chofer.checkBasicData()!= null
+            || producto.checkBasicData() != null)
             throw new BadRequest(camion.checkBasicData());
-
     }
 
 
