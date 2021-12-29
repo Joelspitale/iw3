@@ -1,6 +1,5 @@
 package ar.edu.iua.iw3.web;
 
-import ar.edu.iua.iw3.modelo.Carga;
 import ar.edu.iua.iw3.modelo.Orden;
 import ar.edu.iua.iw3.modelo.dto.ConciliacionDTO;
 import ar.edu.iua.iw3.negocio.IOrdenNegocio;
@@ -16,10 +15,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
+@RequestMapping(Constantes.URL_BASE)
 public class OrdenRestController {
     @Autowired
     private IOrdenNegocio ordenNegocio;

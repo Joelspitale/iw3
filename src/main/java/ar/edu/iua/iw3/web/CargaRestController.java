@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@RequestMapping(Constantes.URL_BASE)
 public class CargaRestController {
 
     @Autowired
