@@ -3,10 +3,7 @@ package ar.edu.iua.iw3.negocio;
 import ar.edu.iua.iw3.modelo.*;
 import ar.edu.iua.iw3.modelo.dto.CargaDTO;
 import ar.edu.iua.iw3.modelo.persistencia.CargaRepository;
-import ar.edu.iua.iw3.negocio.excepciones.BadRequest;
-import ar.edu.iua.iw3.negocio.excepciones.NegocioException;
-import ar.edu.iua.iw3.negocio.excepciones.NoEncontradoException;
-import ar.edu.iua.iw3.negocio.excepciones.UnprocessableException;
+import ar.edu.iua.iw3.negocio.excepciones.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +65,7 @@ public class CargaNegocio implements ICargaNegocio {
     }
 
     @Override
-    public Carga agregar(Carga carga) throws NegocioException, NoEncontradoException, BadRequest, UnprocessableException {
+    public Carga agregar(Carga carga) throws NegocioException, NoEncontradoException, BadRequest, UnprocessableException, ConflictException {
         validarMetadata(carga);
         String codigoExterno = carga.getOrden().getCodigoExterno();
         Orden orden = existeOrden(codigoExterno);
@@ -82,6 +79,8 @@ public class CargaNegocio implements ICargaNegocio {
             ordenNegocio.modificar(orden);
             throw new UnprocessableException("Tanque lleno");
         }
+
+        carga.checkFechasSalidaEsMenorFechaLlegada();
         carga.setOrden(orden);
         //obtengo y guardo los promedios de las cargas,
         // lo tengo que poner porque sino hay cargas cargadas entonces no hay promedio

@@ -72,7 +72,7 @@ public class Orden implements Serializable{
 	@ApiModelProperty(notes = "Fecha del inicio del proceso de carga.", example = "2021-01-01")
 	private Date fechaInicioProcesoCarga;
 
-	@ApiModelProperty(notes = "Fecha del fin del proceso de carga.", example = "2021-01-01")
+	@ApiModelProperty(notes = "Fecha del fin del proceso de carga,con precision de microSegundos.", example = "2021-01-01")
 	private Date fechaFinProcesoCarga;
 
 	@ApiModelProperty(notes = "Fecha del pesaje final del camión.", example = "2021-01-01")

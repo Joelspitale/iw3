@@ -226,6 +226,7 @@ public class OrdenNegocio implements IOrdenNegocio{
 
     private Orden validarFechaPesajeInicial(Orden orden, Orden ordenDB) throws ConflictException {
         Date fechaPesajeInicialRecibida = orden.getFechaPesajeInicial();
+
         if(ordenDB.getFechaTurno().compareTo(fechaPesajeInicialRecibida)>0)
             throw new ConflictException("La fecha de pesaje debe de ser despues de la fecha de turno");
 

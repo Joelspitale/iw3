@@ -2,10 +2,7 @@ package ar.edu.iua.iw3.negocio;
 
 import ar.edu.iua.iw3.modelo.Carga;
 import ar.edu.iua.iw3.modelo.dto.CargaDTO;
-import ar.edu.iua.iw3.negocio.excepciones.BadRequest;
-import ar.edu.iua.iw3.negocio.excepciones.NegocioException;
-import ar.edu.iua.iw3.negocio.excepciones.NoEncontradoException;
-import ar.edu.iua.iw3.negocio.excepciones.UnprocessableException;
+import ar.edu.iua.iw3.negocio.excepciones.*;
 
 import java.util.List;
 
@@ -17,7 +14,7 @@ public interface ICargaNegocio {
 
     Carga cargar(long id) throws NegocioException, NoEncontradoException;
 
-    Carga agregar(Carga carga) throws NegocioException, NoEncontradoException, BadRequest, UnprocessableException;
+    Carga agregar(Carga carga) throws NegocioException, NoEncontradoException, BadRequest, UnprocessableException, ConflictException;
 
     Carga modificar(Carga carga) throws NegocioException, NoEncontradoException;
 

@@ -4,10 +4,7 @@ import ar.edu.iua.iw3.modelo.Carga;
 import ar.edu.iua.iw3.modelo.dto.CargaDTO;
 import ar.edu.iua.iw3.negocio.CargaNegocio;
 import ar.edu.iua.iw3.negocio.ICargaNegocio;
-import ar.edu.iua.iw3.negocio.excepciones.BadRequest;
-import ar.edu.iua.iw3.negocio.excepciones.NegocioException;
-import ar.edu.iua.iw3.negocio.excepciones.NoEncontradoException;
-import ar.edu.iua.iw3.negocio.excepciones.UnprocessableException;
+import ar.edu.iua.iw3.negocio.excepciones.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
@@ -19,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -72,6 +70,7 @@ public class CargaRestController {
     @PostMapping(value= "/cargas")
     public ResponseEntity<String> agregar(@RequestBody Carga carga) {
         try {
+            carga.setFechaEntradaBackEnd(new Date());
             Carga respuesta=cargaNegocio.agregar(carga);
             HttpHeaders responseHeaders=new HttpHeaders();
             responseHeaders.set("location", "/carga/"+respuesta.getId());
@@ -88,6 +87,9 @@ public class CargaRestController {
         } catch (UnprocessableException e) {
             log.error(e.getMessage(), e);
             return new ResponseEntity<String>(HttpStatus.UNPROCESSABLE_ENTITY);
+        } catch (ConflictException e) {
+            log.error(e.getMessage(), e);
+            return new ResponseEntity<String>(HttpStatus.CONFLICT);
         }
     }
 
