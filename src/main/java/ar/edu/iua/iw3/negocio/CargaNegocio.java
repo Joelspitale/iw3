@@ -19,6 +19,8 @@ public class CargaNegocio implements ICargaNegocio {
 
     private Logger log = LoggerFactory.getLogger(CamionNegocio.class);
 
+    private Date proximoTiempoLimite;
+
     @Autowired
     private CargaRepository cargaDAO;
 
@@ -108,18 +110,25 @@ public class CargaNegocio implements ICargaNegocio {
             orden.setFechaInicioProcesoCarga(new Date());
 
         ordenNegocio.modificar(orden);
-        //primero debo de traer el tiempo de la primera carga sino existe entonces tomo el tiempo en que llego la carga al back-end
-        Date proximoTiempoLimite = sumarFrecuenciaConTiempo(orden.getFrecuencia(),carga.getFechaEntradaBackEnd());
-        //if()
-        return cargaDAO.save(carga);
+
+        //sino hay cargas en la bd entonces la tiempo inicial es
+        if(listado().size()==0)
+            proximoTiempoLimite = sumarFrecuenciaConTiempo(orden.getFrecuencia(),orden.getFechaInicioProcesoCarga());
+
+        if(proximoTiempoLimite.compareTo(carga.getFechaEntradaBackEnd())<0) {
+            cargaDAO.save(carga);
+            proximoTiempoLimite = sumarFrecuenciaConTiempo(orden.getFrecuencia(),proximoTiempoLimite);
+        }
+        System.out.println("No se guarda la carga porque ya paso su frecuencia");
+        return carga;
     }
 
-    private Date sumarFrecuenciaConTiempo(int frecuenciaenSegundos, Date ultimoTiempoDeInsert){
+    private Date sumarFrecuenciaConTiempo(int frecuenciaEnSegundos, Date proximoTiempoLimite){
         Calendar cal = Calendar.getInstance();
-        cal.setTime(ultimoTiempoDeInsert);
+        cal.setTime(proximoTiempoLimite);
 
         //Le cambiamos los segundos
-        cal.set(Calendar.SECOND,cal.get(Calendar.SECOND)+frecuenciaenSegundos);
+        cal.set(Calendar.SECOND,cal.get(Calendar.SECOND)+frecuenciaEnSegundos);
         return cal.getTime();
     }
 
