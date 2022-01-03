@@ -85,8 +85,9 @@ public class Orden implements Serializable{
 	@ApiModelProperty(notes = "Contraseña generada al registrar el pesaje inicial del camión.", example = "65485")
 	private String password;
 
-	@ApiModelProperty(notes = "Frecuencia de registro de carga del camión.(cargas/minuto) ", example = "60")
-	private int frecuencia;
+	@ApiModelProperty(notes = "Frecuencia en segundos del registro de carga del camión", example = "1")
+	@Column(columnDefinition = "int default 1")
+	private int frecuencia = 1;
 
 	@ApiModelProperty(notes = "Peso del combustible (kG) ya cargado.", example = "30")
 	private float masaAcumuladaKg;

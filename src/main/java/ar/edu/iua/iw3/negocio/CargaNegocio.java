@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -106,8 +108,19 @@ public class CargaNegocio implements ICargaNegocio {
             orden.setFechaInicioProcesoCarga(new Date());
 
         ordenNegocio.modificar(orden);
-
+        //primero debo de traer el tiempo de la primera carga sino existe entonces tomo el tiempo en que llego la carga al back-end
+        Date proximoTiempoLimite = sumarFrecuenciaConTiempo(orden.getFrecuencia(),carga.getFechaEntradaBackEnd());
+        //if()
         return cargaDAO.save(carga);
+    }
+
+    private Date sumarFrecuenciaConTiempo(int frecuenciaenSegundos, Date ultimoTiempoDeInsert){
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(ultimoTiempoDeInsert);
+
+        //Le cambiamos los segundos
+        cal.set(Calendar.SECOND,cal.get(Calendar.SECOND)+frecuenciaenSegundos);
+        return cal.getTime();
     }
 
     private boolean isValidoMasaAcumuadaActualCargaConLaAnterior(Orden orden, Carga carga) {
