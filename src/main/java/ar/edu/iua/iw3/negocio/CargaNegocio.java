@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -78,14 +77,16 @@ public class CargaNegocio implements ICargaNegocio {
             throw new UnprocessableException("La orden : "
                     + orden.getCodigoExterno() + " no esta en estado 2, por lo que no puede realizar la carga");
 
+        carga.checkFechasSalidaEsMenorFechaLlegada();
+
+        carga.setOrden(orden);
         if (orden.getCamion().getPreset() <= carga.getMasaAcumuladaKg()) {
+            cargaDAO.save(carga);
             orden.setEstado(3);
             ordenNegocio.modificar(orden);
             throw new UnprocessableException("Tanque lleno");
         }
 
-        carga.checkFechasSalidaEsMenorFechaLlegada();
-        carga.setOrden(orden);
         //obtengo y guardo los promedios de las cargas,
         // lo tengo que poner porque sino hay cargas cargadas entonces no hay promedio
         try {
@@ -112,9 +113,10 @@ public class CargaNegocio implements ICargaNegocio {
         ordenNegocio.modificar(orden);
 
         //sino hay cargas en la bd entonces la tiempo inicial es
-        if(listado().size()==0)
-            proximoTiempoLimite = sumarFrecuenciaConTiempo(orden.getFrecuencia(),orden.getFechaInicioProcesoCarga());
-
+        if(listado().size()==0) {
+            cargaDAO.save(carga);
+            proximoTiempoLimite = sumarFrecuenciaConTiempo(orden.getFrecuencia(), orden.getFechaInicioProcesoCarga());
+        }
         if(proximoTiempoLimite.compareTo(carga.getFechaEntradaBackEnd())<0) {
             cargaDAO.save(carga);
             proximoTiempoLimite = sumarFrecuenciaConTiempo(orden.getFrecuencia(),proximoTiempoLimite);
@@ -155,7 +157,7 @@ public class CargaNegocio implements ICargaNegocio {
     public CargaDTO getPromedioDensidadAndTemperaturaAndCaudal(String codigoExterno) throws NegocioException, NoEncontradoException {
         Orden orden = existeOrden(codigoExterno);
         if (orden.getCargaList().size() == 0)
-            throw new NoEncontradoException("No hay cargas registradas en esta orden");
+            throw new NoEncontradoException("No hay cargas registradas en esta orden, por lo que el promedio sera calculado ");
 
         try {
             //calculo los datos de la orden y luego los actualizo

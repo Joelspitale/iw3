@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Date;
@@ -67,7 +68,7 @@ public class CargaRestController {
             @ApiResponse(code = 500 , message = "Información incorrecta recibida"),
             @ApiResponse(code = 404 , message = "No es posible localizar la orden")
     })
-    @PostMapping(value= "/cargas")
+    @PostMapping(value= "/cargas",produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> agregar(@RequestBody Carga carga) {
         try {
             carga.setFechaEntradaBackEnd(new Date());
