@@ -148,9 +148,9 @@ public class OrdenRestController {
             @ApiResponse(code = 500 , message = "Información incorrecta recibida")
     })
     @PutMapping(value= "/ordenes/frenar-carga")
-    public ResponseEntity<Orden> frenarCargar(@RequestParam("codigoExterno") String codigoExterno) {
+    public ResponseEntity<Orden> frenarCargar(@RequestBody Orden orden) {
         try {
-            return new ResponseEntity<Orden>(ordenNegocio.frenarCargar(codigoExterno), HttpStatus.OK);
+            return new ResponseEntity<Orden>(ordenNegocio.frenarCargar(orden.getCodigoExterno()), HttpStatus.OK);
         } catch (NegocioException e) {
             log.error(e.getMessage(), e);
             return new ResponseEntity<Orden>(HttpStatus.INTERNAL_SERVER_ERROR);
